@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/placeholder">
+    app:startDestination="@id/movieFragment">
 
-    <fragment android:id="@+id/placeholder" />
+    <fragment
+        android:id="@+id/movieFragment"
+        android:name="com.example.moviez.ui.movie.MovieFragment"
+        android:label="MovieFragment" />
+    <fragment
+        android:id="@+id/TVFragment"
+        android:name="com.example.moviez.ui.tv.TVFragment"
+        android:label="TVFragment" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.moviez.ui.search.SearchFragment"
+        android:label="SearchFragment" />
+    <fragment
+        android:id="@+id/starFragment"
+        android:name="com.example.moviez.ui.star.StarFragment"
+        android:label="StarFragment" />
 </navigation>

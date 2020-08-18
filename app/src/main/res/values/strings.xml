@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Moviez</string>
+    <string name="star">Star</string>
+    <string name="search">Search</string>
+    <string name="movie">Movie</string>
+    <string name="tv">TV</string>
 </resources>
