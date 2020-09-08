@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="movie"
+            type="com.example.moviez.model.movie.Movie" />
+
+        <variable
+            name="clickListener"
+            type="com.example.moviez.recview.click_listeners.MovieClickListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="@{() -> clickListener.onClick(movie)}">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/shapeableImageView"
+            bindBackdropImage="@{movie.backdropPath}"
+            android:layout_width="0dp"
+            android:layout_height="400dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="@{movie.title}"
+            android:textAlignment="center"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@+id/textView5"
+            app:layout_constraintEnd_toEndOf="@+id/shapeableImageView"
+            app:layout_constraintStart_toStartOf="@+id/shapeableImageView"
+            tools:text="Tenet" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textView5"
+            bindDate="@{movie.releaseDate}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:drawableStart="@drawable/date"
+            android:drawingCacheQuality="high"
+            android:gravity="center"
+            android:textColor="@color/secondaryTextColor"
+            app:drawableTint="@android:color/black"
+            app:layout_constraintBottom_toTopOf="@+id/textView6"
+            app:layout_constraintEnd_toEndOf="@+id/shapeableImageView"
+            app:layout_constraintStart_toStartOf="@+id/shapeableImageView"
+            tools:text=" 3 September 2020" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:drawableStart="@drawable/star"
+            android:gravity="center"
+            android:maxLength="4"
+            android:text="@{String.valueOf(movie.voteAverage)}"
+            android:textColor="@color/secondaryTextColor"
+            app:drawableTint="#FFC107"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/shapeableImageView"
+            app:layout_constraintStart_toStartOf="@+id/shapeableImageView"
+            tools:text="7.9" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
