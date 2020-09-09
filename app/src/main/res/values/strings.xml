@@ -11,4 +11,6 @@
     <string name="upcoming">Upcoming</string>
     <string name="now_playing">Now Playing</string>
     <string name="see_all">See All</string>
+    <string name="airing_today">Airing Today</string>
+    <string name="on_the_air">On The Air</string>
 </resources>

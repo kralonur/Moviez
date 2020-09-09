@@ -104,8 +104,8 @@ dependencies {
     //Recyclerview Animator
     implementation "jp.wasabeef:recyclerview-animators:$recyclerview_animators_version"
 
-    def klockVersion = "1.12.0"
+    def klock_version = "1.12.0"
     //Klock
-    implementation "com.soywiz.korlibs.klock:klock:$klockVersion"
+    implementation "com.soywiz.korlibs.klock:klock:$klock_version"
 
 }

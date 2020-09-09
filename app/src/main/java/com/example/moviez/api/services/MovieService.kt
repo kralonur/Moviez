@@ -1,8 +1,8 @@
 package com.example.moviez.api.services
 
-import com.example.moviez.model.result.BaseResponse
 import com.example.moviez.model.movie.Movie
 import com.example.moviez.model.movie.MovieDetails
+import com.example.moviez.model.result.BaseResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
