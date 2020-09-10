@@ -48,3 +48,10 @@ fun MaterialTextView.bindDate(date: String?) {
         this.text = locale.formatDateLong.format(finalDate)
     }
 }
+
+@BindingAdapter("bindProfileImage")
+fun AppCompatImageView.bindProfileImage(imagePath: String?) {
+    imagePath?.let {
+        bindImage(Constants.TMDB.PROFILE_SIZE_185 + imagePath)
+    }
+}
