@@ -7,7 +7,11 @@
     <fragment
         android:id="@+id/movieFragment"
         android:name="com.example.moviez.ui.movie.MovieFragment"
-        android:label="MovieFragment" />
+        android:label="MovieFragment" >
+        <action
+            android:id="@+id/action_movieFragment_to_movieCollectionsTabFragment"
+            app:destination="@id/movieCollectionsTabFragment" />
+    </fragment>
     <fragment
         android:id="@+id/TVFragment"
         android:name="com.example.moviez.ui.tv.TVFragment"
@@ -20,4 +24,13 @@
         android:id="@+id/starFragment"
         android:name="com.example.moviez.ui.star.StarFragment"
         android:label="StarFragment" />
+    <fragment
+        android:id="@+id/movieCollectionsTabFragment"
+        android:name="com.example.moviez.ui.movie_collection_tab.MovieCollectionsTabFragment"
+        android:label="MovieCollectionsTabFragment" >
+        <argument
+            android:name="queryType"
+            app:argType="com.example.moviez.enums.MovieQueryType"
+            android:defaultValue="POPULAR" />
+    </fragment>
 </navigation>

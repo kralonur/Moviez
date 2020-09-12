@@ -14,8 +14,12 @@ class MovieViewModel : ViewModel() {
     private val movieRepository = MovieRepository()
 
     val queryType = MutableLiveData<MovieQueryType>()
-    private val _movieList: LiveData<List<Movie>>
 
+    private val _navigateCollection = MutableLiveData<MovieQueryType?>()
+    val navigateCollection: LiveData<MovieQueryType?>
+        get() = _navigateCollection
+
+    private val _movieList: LiveData<List<Movie>>
     val movieList: LiveData<List<Movie>>
         get() = _movieList
 
@@ -59,5 +63,13 @@ class MovieViewModel : ViewModel() {
     fun changeQueryType(query: MovieQueryType) {
         Timber.i(query.toString())
         queryType.postValue(query)
+    }
+
+    fun navigateToCollection() {
+        _navigateCollection.postValue(queryType.value)
+    }
+
+    fun navigateToCollectionDone() {
+        _navigateCollection.postValue(null)
     }
 }

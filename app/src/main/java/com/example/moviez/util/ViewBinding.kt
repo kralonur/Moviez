@@ -55,3 +55,10 @@ fun AppCompatImageView.bindProfileImage(imagePath: String?) {
         bindImage(Constants.TMDB.PROFILE_SIZE_185 + imagePath)
     }
 }
+
+@BindingAdapter("bindPosterImage")
+fun AppCompatImageView.bindPosterImage(imagePath: String?) {
+    imagePath?.let {
+        bindImage(Constants.TMDB.PROFILE_SIZE_185 + imagePath)
+    }
+}

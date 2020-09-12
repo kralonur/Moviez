@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.moviez.databinding.FragmentMovieBinding
 import com.example.moviez.enums.MovieQueryType
 import com.example.moviez.model.movie.Movie
@@ -37,7 +38,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         }
 
         binding.seeAll.setOnClickListener {
-            //TODO("Not yet implemented")
+            viewModel.navigateToCollection()
         }
 
         binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -48,6 +49,15 @@ class MovieFragment : Fragment(), MovieClickListener {
                 binding.chipMovieTopRated.id -> viewModel.changeQueryType(MovieQueryType.TOP_RATED)
                 binding.chipMovieUpcoming.id -> viewModel.changeQueryType(MovieQueryType.UPCOMING)
             }
+        }
+
+        viewModel.navigateCollection.observe(viewLifecycleOwner) {
+            it?.let {
+                findNavController().navigate(
+                    MovieFragmentDirections.actionMovieFragmentToMovieCollectionsTabFragment(it)
+                )
+            }
+            viewModel.navigateToCollectionDone()
         }
     }
 
