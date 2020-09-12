@@ -15,7 +15,11 @@
     <fragment
         android:id="@+id/TVFragment"
         android:name="com.example.moviez.ui.tv.TVFragment"
-        android:label="TVFragment" />
+        android:label="TVFragment" >
+        <action
+            android:id="@+id/action_TVFragment_to_TVCollectionsTabFragment"
+            app:destination="@id/TVCollectionsTabFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.moviez.ui.search.SearchFragment"
@@ -31,6 +35,15 @@
         <argument
             android:name="queryType"
             app:argType="com.example.moviez.enums.MovieQueryType"
+            android:defaultValue="POPULAR" />
+    </fragment>
+    <fragment
+        android:id="@+id/TVCollectionsTabFragment"
+        android:name="com.example.moviez.ui.tv_collection_tab.TVCollectionsTabFragment"
+        android:label="TVCollectionsTabFragment" >
+        <argument
+            android:name="queryType"
+            app:argType="com.example.moviez.enums.TVQueryType"
             android:defaultValue="POPULAR" />
     </fragment>
 </navigation>

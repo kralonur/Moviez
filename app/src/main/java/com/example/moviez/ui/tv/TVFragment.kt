@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.moviez.databinding.FragmentTvBinding
 import com.example.moviez.enums.TVQueryType
 import com.example.moviez.model.tv.TV
@@ -37,7 +38,7 @@ class TVFragment : Fragment(), TVClickListener {
         }
 
         binding.seeAll.setOnClickListener {
-            //TODO("Not yet implemented")
+            viewModel.navigateToCollection()
         }
 
         binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -48,6 +49,15 @@ class TVFragment : Fragment(), TVClickListener {
                 binding.chipTvTopRated.id -> viewModel.changeQueryType(TVQueryType.TOP_RATED)
                 binding.chipTvAiringToday.id -> viewModel.changeQueryType(TVQueryType.AIRING_TODAY)
             }
+        }
+
+        viewModel.navigateCollection.observe(viewLifecycleOwner) {
+            it?.let {
+                findNavController().navigate(
+                    TVFragmentDirections.actionTVFragmentToTVCollectionsTabFragment(it)
+                )
+            }
+            viewModel.navigateToCollectionDone()
         }
     }
 

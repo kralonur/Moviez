@@ -14,8 +14,12 @@ class TVViewModel : ViewModel() {
     private val tvRepository = TVRepository()
 
     private val queryType = MutableLiveData<TVQueryType>()
-    private val _tvList: LiveData<List<TV>>
 
+    private val _navigateCollection = MutableLiveData<TVQueryType?>()
+    val navigateCollection: LiveData<TVQueryType?>
+        get() = _navigateCollection
+
+    private val _tvList: LiveData<List<TV>>
     val tvList: LiveData<List<TV>>
         get() = _tvList
 
@@ -55,5 +59,13 @@ class TVViewModel : ViewModel() {
     fun changeQueryType(query: TVQueryType) {
         Timber.i(query.toString())
         queryType.postValue(query)
+    }
+
+    fun navigateToCollection() {
+        _navigateCollection.postValue(queryType.value)
+    }
+
+    fun navigateToCollectionDone() {
+        _navigateCollection.postValue(null)
     }
 }
