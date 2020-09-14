@@ -1,11 +1,10 @@
 package com.example.moviez.ui.movie_collection
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.moviez.enums.MovieQueryType
+import com.example.moviez.model.movie.Movie
 import com.example.moviez.paging.MovieDataSourceFactory
 import com.example.moviez.repositories.MovieRepository
 import com.example.moviez.repositories.TrendingRepository
@@ -13,6 +12,10 @@ import com.example.moviez.repositories.TrendingRepository
 class MovieCollectionViewModel(queryType: MovieQueryType) : ViewModel() {
     private val movieRepository = MovieRepository()
     private val trendingRepository = TrendingRepository()
+
+    private val _navigateDetail = MutableLiveData<Movie?>()
+    val navigateDetail: LiveData<Movie?>
+        get() = _navigateDetail
 
     private val dataSourceFactory =
         MovieDataSourceFactory(movieRepository, trendingRepository, viewModelScope, queryType)
@@ -25,6 +28,14 @@ class MovieCollectionViewModel(queryType: MovieQueryType) : ViewModel() {
 
 
     val movieList = LivePagedListBuilder(dataSourceFactory, pagedListConfig).build()
+
+    fun navigateToDetail(movie: Movie) {
+        _navigateDetail.postValue(movie)
+    }
+
+    fun navigateToDetailDone() {
+        _navigateDetail.postValue(null)
+    }
 
     @Suppress("UNCHECKED_CAST")
     class Factory(private val queryType: MovieQueryType) : ViewModelProvider.Factory {

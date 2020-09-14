@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviez.databinding.LayoutRecviewBinding
 import com.example.moviez.enums.MovieQueryType
 import com.example.moviez.model.movie.Movie
 import com.example.moviez.recview.adapters.MovieCollectionAdapter
 import com.example.moviez.recview.click_listeners.MovieClickListener
+import com.example.moviez.ui.movie_collection_tab.MovieCollectionsTabFragmentDirections
 
 class MovieCollectionFragment(queryType: MovieQueryType) : Fragment(), MovieClickListener {
     private val viewModel by viewModels<MovieCollectionViewModel> {
@@ -45,9 +47,20 @@ class MovieCollectionFragment(queryType: MovieQueryType) : Fragment(), MovieClic
             adapter.submitList(it)
         }
 
+        viewModel.navigateDetail.observe(viewLifecycleOwner) {
+            it?.let {
+                findNavController().navigate(
+                    MovieCollectionsTabFragmentDirections.actionMovieCollectionsTabFragmentToMovieDetailFragment(
+                        it.id
+                    )
+                )
+            }
+            viewModel.navigateToDetailDone()
+        }
+
     }
 
     override fun onClick(movie_data: Movie) {
-        //TODO("Not yet implemented")
+        viewModel.navigateToDetail(movie_data)
     }
 }

@@ -11,6 +11,9 @@
         <action
             android:id="@+id/action_movieFragment_to_movieCollectionsTabFragment"
             app:destination="@id/movieCollectionsTabFragment" />
+        <action
+            android:id="@+id/action_movieFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/TVFragment"
@@ -36,6 +39,9 @@
             android:name="queryType"
             app:argType="com.example.moviez.enums.MovieQueryType"
             android:defaultValue="POPULAR" />
+        <action
+            android:id="@+id/action_movieCollectionsTabFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/TVCollectionsTabFragment"
@@ -45,5 +51,13 @@
             android:name="queryType"
             app:argType="com.example.moviez.enums.TVQueryType"
             android:defaultValue="POPULAR" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="com.example.moviez.ui.movie_detail.MovieDetailFragment"
+        android:label="MovieDetailFragment" >
+        <argument
+            android:name="movieId"
+            app:argType="integer" />
     </fragment>
 </navigation>

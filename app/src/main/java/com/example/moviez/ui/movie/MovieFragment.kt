@@ -59,9 +59,18 @@ class MovieFragment : Fragment(), MovieClickListener {
             }
             viewModel.navigateToCollectionDone()
         }
+
+        viewModel.navigateDetail.observe(viewLifecycleOwner) {
+            it?.let {
+                findNavController().navigate(
+                    MovieFragmentDirections.actionMovieFragmentToMovieDetailFragment(it.id)
+                )
+            }
+            viewModel.navigateToDetailDone()
+        }
     }
 
     override fun onClick(movie_data: Movie) {
-        //TODO("Not yet implemented")
+        viewModel.navigateToDetail(movie_data)
     }
 }

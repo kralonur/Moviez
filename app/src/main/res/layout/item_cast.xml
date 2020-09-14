@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="cast"
+            type="com.example.moviez.model.cast.Cast" />
+
+        <variable
+            name="clickListener"
+            type="com.example.moviez.recview.click_listeners.CastClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:onClick="@{() -> clickListener.onClick(cast)}"
+        android:orientation="vertical">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            bindCastImage="@{cast.profilePath}"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/circleImageView"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:maxWidth="92dp"
+            android:maxLines="2"
+            android:text="@{cast.name}"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            tools:text="John David Washington" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:maxWidth="92dp"
+            android:maxLines="2"
+            android:text="@{cast.character}"
+            android:textAlignment="center"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="12sp"
+            tools:text="The Protagonist" />
+
+    </LinearLayout>
+</layout>

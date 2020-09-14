@@ -19,6 +19,10 @@ class MovieViewModel : ViewModel() {
     val navigateCollection: LiveData<MovieQueryType?>
         get() = _navigateCollection
 
+    private val _navigateDetail = MutableLiveData<Movie?>()
+    val navigateDetail: LiveData<Movie?>
+        get() = _navigateDetail
+
     private val _movieList: LiveData<List<Movie>>
     val movieList: LiveData<List<Movie>>
         get() = _movieList
@@ -71,5 +75,13 @@ class MovieViewModel : ViewModel() {
 
     fun navigateToCollectionDone() {
         _navigateCollection.postValue(null)
+    }
+
+    fun navigateToDetail(movie: Movie) {
+        _navigateDetail.postValue(movie)
+    }
+
+    fun navigateToDetailDone() {
+        _navigateDetail.postValue(null)
     }
 }

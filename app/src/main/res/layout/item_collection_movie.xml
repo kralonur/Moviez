@@ -18,7 +18,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{()-> clickListener.onClick(movie)}">
+        android:onClick="@{() -> clickListener.onClick(movie)}">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/shapeableImageView"
@@ -38,12 +38,14 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/materialTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:maxLines="2"
             android:text="@{movie.title}"
             android:textColor="@color/secondaryTextColor"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
             app:layout_constraintTop_toTopOf="@+id/shapeableImageView"
             tools:text="Sonic the Hedgehog" />

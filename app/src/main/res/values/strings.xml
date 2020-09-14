@@ -15,4 +15,33 @@
     <string name="see_all">See All</string>
     <string name="airing_today">Airing Today</string>
     <string name="on_the_air">On The Air</string>
+    <string name="runtime">Runtime</string>
+    <string name="cast">Cast</string>
+    <string name="production_companies">Production Companies</string>
+    <string name="production_countries">Production Countries</string>
+    <string name="revenue">Revenue</string>
+    <string name="budget">Budget</string>
+    <string name="release_date">Release Date</string>
+    <string name="status">Status</string>
+    <string name="original_language">Original Language</string>
+    <string name="original_title">Original Title</string>
+    <string name="information">Information</string>
+    <string name="overview">Overview</string>
+    <string name="runtime_mask" translatable="false">%s %s</string>
+    <string name="money_mask" translatable="false">$ %s</string>
+
+    <!--    Plurals-->
+    <plurals name="minutes">
+        <item quantity="one">%1$d minute</item>
+        <item quantity="few">%1$d minutes</item>
+        <item quantity="many">%1$d minutes</item>
+        <item quantity="other">%1$d minutes</item>
+    </plurals>
+
+    <plurals name="hours">
+        <item quantity="one">%1$d hour</item>
+        <item quantity="few">%1$d hours</item>
+        <item quantity="many">%1$d hours</item>
+        <item quantity="other">%1$d hours</item>
+    </plurals>
 </resources>
