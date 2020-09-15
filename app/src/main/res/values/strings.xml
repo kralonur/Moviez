@@ -29,6 +29,10 @@
     <string name="overview">Overview</string>
     <string name="runtime_mask" translatable="false">%s %s</string>
     <string name="money_mask" translatable="false">$ %s</string>
+    <string name="first_air_date">First Air Date</string>
+    <string name="last_air_date">Last Air Date</string>
+    <string name="aired_episodes">Aired Episodes</string>
+    <string name="show_type">Show Type</string>
 
     <!--    Plurals-->
     <plurals name="minutes">

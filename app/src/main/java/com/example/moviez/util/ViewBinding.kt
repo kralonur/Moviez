@@ -96,6 +96,17 @@ fun MaterialTextView.bindProductionCountry(list: List<ProductionCountry>?) {
     }
 }
 
+@BindingAdapter("bindStringList")
+fun MaterialTextView.bindStringList(list: List<String>?) {
+    if (list == null || list.isEmpty()) {
+        this.text = "-"
+    } else {
+        val stringBuilder = StringBuilder()
+        list.forEach { stringBuilder.append(it).appendLine() }
+        this.text = stringBuilder.toString()
+    }
+}
+
 @BindingAdapter("bindRuntime")
 fun MaterialTextView.bindRuntime(minute: Int?) {
     if (minute == null || minute <= 0) {

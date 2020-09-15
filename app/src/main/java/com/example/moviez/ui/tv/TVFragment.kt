@@ -59,9 +59,18 @@ class TVFragment : Fragment(), TVClickListener {
             }
             viewModel.navigateToCollectionDone()
         }
+
+        viewModel.navigateDetail.observe(viewLifecycleOwner) {
+            it?.let {
+                findNavController().navigate(
+                    TVFragmentDirections.actionTVFragmentToTVDetailFragment(it.id)
+                )
+            }
+            viewModel.navigateToDetailDone()
+        }
     }
 
     override fun onClick(tv_data: TV) {
-        //TODO("Not yet implemented")
+        viewModel.navigateToDetail(tv_data)
     }
 }

@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviez.databinding.LayoutRecviewBinding
 import com.example.moviez.enums.TVQueryType
 import com.example.moviez.model.tv.TV
 import com.example.moviez.recview.adapters.TVCollectionAdapter
 import com.example.moviez.recview.click_listeners.TVClickListener
+import com.example.moviez.ui.tv_collection_tab.TVCollectionsTabFragmentDirections
 
 class TVCollectionFragment(queryType: TVQueryType) : Fragment(), TVClickListener {
     private val viewModel by viewModels<TVCollectionViewModel> {
@@ -45,9 +47,20 @@ class TVCollectionFragment(queryType: TVQueryType) : Fragment(), TVClickListener
             adapter.submitList(it)
         }
 
+        viewModel.navigateDetail.observe(viewLifecycleOwner) {
+            it?.let {
+                findNavController().navigate(
+                    TVCollectionsTabFragmentDirections.actionTVCollectionsTabFragmentToTVDetailFragment(
+                        it.id
+                    )
+                )
+            }
+            viewModel.navigateToDetailDone()
+        }
+
     }
 
     override fun onClick(tv_data: TV) {
-        //TODO("Not yet implemented")
+        viewModel.navigateToDetail(tv_data)
     }
 }

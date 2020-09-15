@@ -1,11 +1,10 @@
 package com.example.moviez.ui.tv_collection
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.moviez.enums.TVQueryType
+import com.example.moviez.model.tv.TV
 import com.example.moviez.paging.TVDataSourceFactory
 import com.example.moviez.repositories.TVRepository
 import com.example.moviez.repositories.TrendingRepository
@@ -13,6 +12,10 @@ import com.example.moviez.repositories.TrendingRepository
 class TVCollectionViewModel(queryType: TVQueryType) : ViewModel() {
     private val tvRepository = TVRepository()
     private val trendingRepository = TrendingRepository()
+
+    private val _navigateDetail = MutableLiveData<TV?>()
+    val navigateDetail: LiveData<TV?>
+        get() = _navigateDetail
 
     private val dataSourceFactory =
         TVDataSourceFactory(tvRepository, trendingRepository, viewModelScope, queryType)
@@ -24,6 +27,14 @@ class TVCollectionViewModel(queryType: TVQueryType) : ViewModel() {
         .build()
 
     val tvList = LivePagedListBuilder(dataSourceFactory, pagedListConfig).build()
+
+    fun navigateToDetail(tv: TV) {
+        _navigateDetail.postValue(tv)
+    }
+
+    fun navigateToDetailDone() {
+        _navigateDetail.postValue(null)
+    }
 
     @Suppress("UNCHECKED_CAST")
     class Factory(private val queryType: TVQueryType) : ViewModelProvider.Factory {

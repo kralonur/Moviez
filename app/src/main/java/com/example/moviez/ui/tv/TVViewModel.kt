@@ -19,6 +19,10 @@ class TVViewModel : ViewModel() {
     val navigateCollection: LiveData<TVQueryType?>
         get() = _navigateCollection
 
+    private val _navigateDetail = MutableLiveData<TV?>()
+    val navigateDetail: LiveData<TV?>
+        get() = _navigateDetail
+
     private val _tvList: LiveData<List<TV>>
     val tvList: LiveData<List<TV>>
         get() = _tvList
@@ -67,5 +71,13 @@ class TVViewModel : ViewModel() {
 
     fun navigateToCollectionDone() {
         _navigateCollection.postValue(null)
+    }
+
+    fun navigateToDetail(tv: TV) {
+        _navigateDetail.postValue(tv)
+    }
+
+    fun navigateToDetailDone() {
+        _navigateDetail.postValue(null)
     }
 }
