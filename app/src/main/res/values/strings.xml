@@ -33,6 +33,14 @@
     <string name="last_air_date">Last Air Date</string>
     <string name="aired_episodes">Aired Episodes</string>
     <string name="show_type">Show Type</string>
+    <string name="about">About</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">TV Shows</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="death_date">Death Date</string>
+    <string name="birth_place">Birth Place</string>
+    <string name="biography">Biography</string>
+    <string name="unknown">UNKNOWN</string>
 
     <!--    Plurals-->
     <plurals name="minutes">

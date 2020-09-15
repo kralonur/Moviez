@@ -7,22 +7,22 @@
     <data>
 
         <variable
-            name="movie"
-            type="com.example.moviez.model.movie.Movie" />
+            name="movieCast"
+            type="com.example.moviez.model.cast.MovieCast" />
 
         <variable
             name="clickListener"
-            type="com.example.moviez.recview.click_listeners.MovieClickListener" />
+            type="com.example.moviez.recview.click_listeners.MovieCastClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> clickListener.onClick(movie)}">
+        android:onClick="@{() -> clickListener.onClick(movieCast)}">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/shapeableImageView"
-            bindPosterImage="@{movie.posterPath}"
+            bindPosterImage="@{movieCast.posterPath}"
             android:layout_width="wrap_content"
             android:layout_height="120dp"
             android:layout_marginStart="8dp"
@@ -43,15 +43,16 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:maxLines="2"
-            android:text="@{movie.title}"
+            android:text="@{movieCast.title}"
             android:textColor="@color/secondaryTextColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
             app:layout_constraintTop_toTopOf="@+id/shapeableImageView"
-            tools:text="Sonic the Hedgehog" />
+            tools:text="Tenet" />
 
         <com.google.android.material.textview.MaterialTextView
-            bindYear="@{movie.releaseDate}"
+            android:id="@+id/materialTextView2"
+            bindYear="@{movieCast.releaseDate}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -60,5 +61,19 @@
             app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
             app:layout_constraintTop_toBottomOf="@+id/materialTextView"
             tools:text="2020" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/materialTextView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@{movieCast.character != null ? movieCast.character : @string/unknown}"
+            android:textColor="@color/primaryDarkColorRed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
+            app:layout_constraintTop_toBottomOf="@+id/materialTextView2"
+            tools:text="The Protagonist" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

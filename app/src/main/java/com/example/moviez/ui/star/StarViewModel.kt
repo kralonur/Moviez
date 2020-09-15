@@ -1,10 +1,13 @@
 package com.example.moviez.ui.star
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.moviez.enums.PersonQueryType
+import com.example.moviez.model.person.Person
 import com.example.moviez.paging.PersonDataSourceFactory
 import com.example.moviez.repositories.PersonRepository
 import com.example.moviez.repositories.TrendingRepository
@@ -13,6 +16,10 @@ class StarViewModel : ViewModel() {
 
     private val personRepository = PersonRepository()
     private val trendingRepository = TrendingRepository()
+
+    private val _navigateStar = MutableLiveData<Person?>()
+    val navigateStar: LiveData<Person?>
+        get() = _navigateStar
 
     private val dataSourceFactory = PersonDataSourceFactory(
         personRepository, trendingRepository, viewModelScope, PersonQueryType.TRENDING_WEEKLY
@@ -26,5 +33,13 @@ class StarViewModel : ViewModel() {
 
 
     val personList = LivePagedListBuilder(dataSourceFactory, pagedListConfig).build()
+
+    fun navigateToStar(person: Person) {
+        _navigateStar.postValue(person)
+    }
+
+    fun navigateToStarDone() {
+        _navigateStar.postValue(null)
+    }
 
 }

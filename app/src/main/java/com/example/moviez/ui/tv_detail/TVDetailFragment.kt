@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.moviez.databinding.FragmentTvDetailBinding
 import com.example.moviez.model.cast.Cast
@@ -48,7 +49,11 @@ class TVDetailFragment : Fragment(), CastClickListener {
 
         viewModel.navigateStar.observe(viewLifecycleOwner) {
             it?.let {
-
+                findNavController().navigate(
+                    TVDetailFragmentDirections.actionTVDetailFragmentToStarDetailFragment(
+                        it.id
+                    )
+                )
             }
             viewModel.navigateToStarDone()
         }

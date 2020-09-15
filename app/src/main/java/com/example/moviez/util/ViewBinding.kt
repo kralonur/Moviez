@@ -80,7 +80,12 @@ fun MaterialTextView.bindProductionCompany(list: List<ProductionCompany>?) {
         this.text = "-"
     } else {
         val stringBuilder = StringBuilder()
-        list.forEach { stringBuilder.append(it.name).appendLine() }
+        list.forEachIndexed { index, p ->
+            stringBuilder.append(p.name)
+            if (index != list.lastIndex) {
+                stringBuilder.appendLine()
+            }
+        }
         this.text = stringBuilder.toString()
     }
 }
@@ -91,7 +96,12 @@ fun MaterialTextView.bindProductionCountry(list: List<ProductionCountry>?) {
         this.text = "-"
     } else {
         val stringBuilder = StringBuilder()
-        list.forEach { stringBuilder.append(it.name).appendLine() }
+        list.forEachIndexed { index, p ->
+            stringBuilder.append(p.name)
+            if (index != list.lastIndex) {
+                stringBuilder.appendLine()
+            }
+        }
         this.text = stringBuilder.toString()
     }
 }
@@ -102,7 +112,12 @@ fun MaterialTextView.bindStringList(list: List<String>?) {
         this.text = "-"
     } else {
         val stringBuilder = StringBuilder()
-        list.forEach { stringBuilder.append(it).appendLine() }
+        list.forEachIndexed { index, s ->
+            stringBuilder.append(s)
+            if (index != list.lastIndex) {
+                stringBuilder.appendLine()
+            }
+        }
         this.text = stringBuilder.toString()
     }
 }
@@ -125,6 +140,23 @@ fun MaterialTextView.bindRuntime(minute: Int?) {
             stringHours,
             stringMinutes
         )
+    }
+}
+
+@BindingAdapter("bindTvRuntime")
+fun MaterialTextView.bindTvRuntime(list: List<Int>?) {
+    if (list == null || list.isEmpty()) {
+        this.text = "-"
+    } else {
+        val stringBuilder = StringBuilder()
+        list.forEachIndexed { index, i ->
+            stringBuilder.append(i).append(" m")
+            if (index != list.lastIndex) {
+                stringBuilder.append(", ")
+            }
+        }
+
+        this.text = stringBuilder.toString()
     }
 }
 
