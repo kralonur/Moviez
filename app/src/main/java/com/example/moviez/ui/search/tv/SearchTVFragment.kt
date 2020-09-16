@@ -1,20 +1,24 @@
-package com.example.moviez.ui.star
+package com.example.moviez.ui.search.tv
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviez.databinding.LayoutRecviewBinding
-import com.example.moviez.model.person.Person
-import com.example.moviez.recview.adapters.StarAdapter
-import com.example.moviez.recview.click_listeners.PersonClickListener
+import com.example.moviez.model.tv.TV
+import com.example.moviez.recview.adapters.TVCollectionAdapter
+import com.example.moviez.recview.click_listeners.TVClickListener
+import com.example.moviez.ui.search.SearchFragmentDirections
+import com.example.moviez.ui.search.SearchViewModel
 
-class StarFragment : Fragment(), PersonClickListener {
-    private val viewModel by viewModels<StarViewModel>()
+class SearchTVFragment : Fragment(), TVClickListener {
+    private val searchViewModel by activityViewModels<SearchViewModel>()
+    private val viewModel by viewModels<SearchTVViewModel>()
     private lateinit var binding: LayoutRecviewBinding
 
     override fun onCreateView(
@@ -30,30 +34,31 @@ class StarFragment : Fragment(), PersonClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = StarAdapter(this)
-
+        val adapter = TVCollectionAdapter(this)
         binding.recView.apply {
             this.adapter = adapter
-            layoutManager = GridLayoutManager(requireContext(), 2)
+            layoutManager = LinearLayoutManager(requireContext())
         }
 
-        viewModel.personList.observe(viewLifecycleOwner) {
+        searchViewModel.query.observe(viewLifecycleOwner) {
+            viewModel.updateQuery(it)
+        }
+
+        viewModel.searchResults.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
 
         viewModel.navigateDetail.observe(viewLifecycleOwner) {
             it?.let {
                 findNavController().navigate(
-                    StarFragmentDirections.actionStarFragmentToStarDetailFragment(
-                        it.id
-                    )
+                    SearchFragmentDirections.actionSearchFragmentToTVDetailFragment(it.id)
                 )
             }
             viewModel.navigateToDetailDone()
         }
     }
 
-    override fun onClick(person_data: Person) {
-        viewModel.navigateToDetail(person_data)
+    override fun onClick(tv_data: TV) {
+        viewModel.navigateToDetail(tv_data)
     }
 }

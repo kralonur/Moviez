@@ -36,6 +36,7 @@
     <string name="about">About</string>
     <string name="movies">Movies</string>
     <string name="tv_shows">TV Shows</string>
+    <string name="stars">Stars</string>
     <string name="birth_date">Birth Date</string>
     <string name="death_date">Death Date</string>
     <string name="birth_place">Birth Place</string>

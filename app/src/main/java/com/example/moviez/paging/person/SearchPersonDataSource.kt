@@ -1,26 +1,23 @@
-package com.example.moviez.paging
+package com.example.moviez.paging.person
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.example.moviez.enums.NetworkState
-import com.example.moviez.enums.PersonQueryType
 import com.example.moviez.model.person.Person
 import com.example.moviez.model.result.BaseResponse
 import com.example.moviez.model.result.Result
-import com.example.moviez.repositories.PersonRepository
-import com.example.moviez.repositories.TrendingRepository
+import com.example.moviez.repositories.SearchRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class PersonDataSource(
-    private val personRepository: PersonRepository,
-    private val trendingRepository: TrendingRepository,
-    private val scope: CoroutineScope,
-    private val queryType: PersonQueryType
+class SearchPersonDataSource(
+    private val repository: SearchRepository,
+    private val query: String,
+    private val scope: CoroutineScope
 ) : PageKeyedDataSource<Int, Person>() {
 
     private var supervisorJob = SupervisorJob()
@@ -38,7 +35,6 @@ class PersonDataSource(
         load(1) {
             callback.onResult(it, null, 2)
         }
-
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Person>) {
@@ -64,7 +60,7 @@ class PersonDataSource(
         Timber.i("Load page $page")
         _networkState.postValue(NetworkState.LOADING)
         scope.launch(getExceptionHandler() + supervisorJob) {
-            val response = loadPage(null, page)
+            val response = loadPage(null, page, null)
             retryQuery = null
             _networkState.postValue(NetworkState.SUCCESS)
             response?.let { callback(it) }
@@ -78,27 +74,10 @@ class PersonDataSource(
 
     private suspend fun loadPage(
         language: String?,
-        page: Int
+        page: Int,
+        region: String?
     ): List<Person>? {
-        val response = when (queryType) {
-            PersonQueryType.POPULAR -> {
-                personRepository.getPopularPeoples(language, page)
-            }
-            PersonQueryType.TRENDING_DAILY -> {
-                trendingRepository.getTrendingPeoples(
-                    TrendingRepository.TimeWindow.DAY,
-                    page,
-                    language
-                )
-            }
-            PersonQueryType.TRENDING_WEEKLY -> {
-                trendingRepository.getTrendingPeoples(
-                    TrendingRepository.TimeWindow.WEEK,
-                    page,
-                    language
-                )
-            }
-        }
+        val response = repository.searchPeoples(language, query, page, null, region)
 
         return getResult(response)
     }
@@ -110,4 +89,6 @@ class PersonDataSource(
         }
 
     }
+
+    fun refresh() = this.invalidate()
 }

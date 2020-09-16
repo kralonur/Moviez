@@ -11,7 +11,7 @@ data class TVDetails(
     @Json(name = "backdrop_path") val backdropPath: String?,
     @Json(name = "created_by") val createdBy: List<CreatedBy>,
     @Json(name = "episode_run_time") val episodeRunTime: List<Int>,
-    @Json(name = "first_air_date") val firstAirDate: String,
+    @Json(name = "first_air_date") val firstAirDate: String?,
     @Json(name = "genres") val genres: List<Genre>,
     @Json(name = "homepage") val homepage: String,
     @Json(name = "id") val id: Int,
@@ -46,7 +46,7 @@ data class TVDetails(
         @Json(name = "id") val id: Int,
         @Json(name = "credit_id") val creditId: String,
         @Json(name = "name") val name: String,
-        @Json(name = "gender") val gender: Int,
+        @Json(name = "gender") val gender: Int?,
         @Json(name = "profile_path") val profilePath: String?
     )
 

@@ -5,7 +5,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.moviez.enums.TVQueryType
 import com.example.moviez.model.tv.TV
-import com.example.moviez.paging.TVDataSourceFactory
+import com.example.moviez.paging.tv.TVDataSourceFactory
 import com.example.moviez.repositories.TVRepository
 import com.example.moviez.repositories.TrendingRepository
 

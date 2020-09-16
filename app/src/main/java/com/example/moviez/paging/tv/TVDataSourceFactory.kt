@@ -1,4 +1,4 @@
-package com.example.moviez.paging
+package com.example.moviez.paging.tv
 
 import androidx.paging.DataSource
 import com.example.moviez.enums.TVQueryType

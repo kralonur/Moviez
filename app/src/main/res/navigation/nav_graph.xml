@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/movieFragment"
         android:name="com.example.moviez.ui.movie.MovieFragment"
-        android:label="MovieFragment" >
+        android:label="MovieFragment">
         <action
             android:id="@+id/action_movieFragment_to_movieCollectionsTabFragment"
             app:destination="@id/movieCollectionsTabFragment" />
@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/TVFragment"
         android:name="com.example.moviez.ui.tv.TVFragment"
-        android:label="TVFragment" >
+        android:label="TVFragment">
         <action
             android:id="@+id/action_TVFragment_to_TVCollectionsTabFragment"
             app:destination="@id/TVCollectionsTabFragment" />
@@ -29,11 +29,21 @@
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.moviez.ui.search.SearchFragment"
-        android:label="SearchFragment" />
+        android:label="SearchFragment">
+        <action
+            android:id="@+id/action_searchFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_starDetailFragment"
+            app:destination="@id/starDetailFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_TVDetailFragment"
+            app:destination="@id/TVDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/starFragment"
         android:name="com.example.moviez.ui.star.StarFragment"
-        android:label="StarFragment" >
+        android:label="StarFragment">
         <action
             android:id="@+id/action_starFragment_to_starDetailFragment"
             app:destination="@id/starDetailFragment" />
@@ -41,11 +51,11 @@
     <fragment
         android:id="@+id/movieCollectionsTabFragment"
         android:name="com.example.moviez.ui.movie_collection_tab.MovieCollectionsTabFragment"
-        android:label="MovieCollectionsTabFragment" >
+        android:label="MovieCollectionsTabFragment">
         <argument
             android:name="queryType"
-            app:argType="com.example.moviez.enums.MovieQueryType"
-            android:defaultValue="POPULAR" />
+            android:defaultValue="POPULAR"
+            app:argType="com.example.moviez.enums.MovieQueryType" />
         <action
             android:id="@+id/action_movieCollectionsTabFragment_to_movieDetailFragment"
             app:destination="@id/movieDetailFragment" />
@@ -53,11 +63,11 @@
     <fragment
         android:id="@+id/TVCollectionsTabFragment"
         android:name="com.example.moviez.ui.tv_collection_tab.TVCollectionsTabFragment"
-        android:label="TVCollectionsTabFragment" >
+        android:label="TVCollectionsTabFragment">
         <argument
             android:name="queryType"
-            app:argType="com.example.moviez.enums.TVQueryType"
-            android:defaultValue="POPULAR" />
+            android:defaultValue="POPULAR"
+            app:argType="com.example.moviez.enums.TVQueryType" />
         <action
             android:id="@+id/action_TVCollectionsTabFragment_to_TVDetailFragment"
             app:destination="@id/TVDetailFragment" />
@@ -65,7 +75,7 @@
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="com.example.moviez.ui.movie_detail.MovieDetailFragment"
-        android:label="MovieDetailFragment" >
+        android:label="MovieDetailFragment">
         <argument
             android:name="movieId"
             app:argType="integer" />
@@ -76,7 +86,7 @@
     <fragment
         android:id="@+id/TVDetailFragment"
         android:name="com.example.moviez.ui.tv_detail.TVDetailFragment"
-        android:label="TVDetailFragment" >
+        android:label="TVDetailFragment">
         <argument
             android:name="tvId"
             app:argType="integer" />
@@ -87,7 +97,7 @@
     <fragment
         android:id="@+id/starDetailFragment"
         android:name="com.example.moviez.ui.star_detail.StarDetailFragment"
-        android:label="StarDetailFragment" >
+        android:label="StarDetailFragment">
         <argument
             android:name="personId"
             app:argType="integer" />

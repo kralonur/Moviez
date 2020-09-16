@@ -1,14 +1,14 @@
-package com.example.moviez.paging
+package com.example.moviez.paging.person
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
-import com.example.moviez.enums.MovieQueryType
 import com.example.moviez.enums.NetworkState
-import com.example.moviez.model.movie.Movie
+import com.example.moviez.enums.PersonQueryType
+import com.example.moviez.model.person.Person
 import com.example.moviez.model.result.BaseResponse
 import com.example.moviez.model.result.Result
-import com.example.moviez.repositories.MovieRepository
+import com.example.moviez.repositories.PersonRepository
 import com.example.moviez.repositories.TrendingRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -16,12 +16,12 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class MovieDataSource(
-    private val movieRepository: MovieRepository,
+class PersonDataSource(
+    private val personRepository: PersonRepository,
     private val trendingRepository: TrendingRepository,
     private val scope: CoroutineScope,
-    private val queryType: MovieQueryType
-) : PageKeyedDataSource<Int, Movie>() {
+    private val queryType: PersonQueryType
+) : PageKeyedDataSource<Int, Person>() {
 
     private var supervisorJob = SupervisorJob()
     private val _networkState = MutableLiveData<NetworkState>()
@@ -29,17 +29,19 @@ class MovieDataSource(
         get() = _networkState
     private var retryQuery: (() -> Any)? = null
 
+
     override fun loadInitial(
         params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, Movie>
+        callback: LoadInitialCallback<Int, Person>
     ) {
         retryQuery = { loadInitial(params, callback) }
         load(1) {
             callback.onResult(it, null, 2)
         }
+
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
+    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Person>) {
         retryQuery = { loadAfter(params, callback) }
         val page = params.key
         load(page) {
@@ -47,7 +49,7 @@ class MovieDataSource(
         }
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Person>) {
         retryQuery = { loadAfter(params, callback) }
         val page = params.key
         load(page) {
@@ -57,12 +59,12 @@ class MovieDataSource(
 
     private fun load(
         page: Int,
-        callback: (List<Movie>) -> Unit
+        callback: (List<Person>) -> Unit
     ) {
         Timber.i("Load page $page")
         _networkState.postValue(NetworkState.LOADING)
         scope.launch(getExceptionHandler() + supervisorJob) {
-            val response = loadPage(null, page, null)
+            val response = loadPage(null, page)
             retryQuery = null
             _networkState.postValue(NetworkState.SUCCESS)
             response?.let { callback(it) }
@@ -76,31 +78,21 @@ class MovieDataSource(
 
     private suspend fun loadPage(
         language: String?,
-        page: Int,
-        region: String?
-    ): List<Movie>? {
+        page: Int
+    ): List<Person>? {
         val response = when (queryType) {
-            MovieQueryType.POPULAR -> {
-                movieRepository.getPopularMovies(language, page, region)
+            PersonQueryType.POPULAR -> {
+                personRepository.getPopularPeoples(language, page)
             }
-            MovieQueryType.TOP_RATED -> {
-                movieRepository.getTopRatedMovies(language, page, region)
-            }
-            MovieQueryType.UPCOMING -> {
-                movieRepository.getUpcomingMovies(language, page, region)
-            }
-            MovieQueryType.NOW_PLAYING -> {
-                movieRepository.getNowPlayingMovies(language, page, region)
-            }
-            MovieQueryType.TRENDING_DAILY -> {
-                trendingRepository.getTrendingMovies(
+            PersonQueryType.TRENDING_DAILY -> {
+                trendingRepository.getTrendingPeoples(
                     TrendingRepository.TimeWindow.DAY,
                     page,
                     language
                 )
             }
-            MovieQueryType.TRENDING_WEEKLY -> {
-                trendingRepository.getTrendingMovies(
+            PersonQueryType.TRENDING_WEEKLY -> {
+                trendingRepository.getTrendingPeoples(
                     TrendingRepository.TimeWindow.WEEK,
                     page,
                     language
@@ -111,10 +103,11 @@ class MovieDataSource(
         return getResult(response)
     }
 
-    private fun getResult(response: Result<BaseResponse<Movie>>): List<Movie> {
+    private fun getResult(response: Result<BaseResponse<Person>>): List<Person> {
         return when (response) {
             is Result.Success -> response.value.results
             else -> emptyList()
         }
+
     }
 }
