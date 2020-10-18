@@ -47,20 +47,17 @@ class MovieCollectionFragment(queryType: MovieQueryType) : Fragment(), MovieClic
             adapter.submitList(it)
         }
 
-        viewModel.navigateDetail.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController().navigate(
-                    MovieCollectionsTabFragmentDirections.actionMovieCollectionsTabFragmentToMovieDetailFragment(
-                        it.id
-                    )
-                )
-            }
-            viewModel.navigateToDetailDone()
-        }
+    }
 
+    private fun navigateDetail(id: Int) {
+        findNavController().navigate(
+            MovieCollectionsTabFragmentDirections.actionMovieCollectionsTabFragmentToMovieDetailFragment(
+                id
+            )
+        )
     }
 
     override fun onClick(movie_data: Movie) {
-        viewModel.navigateToDetail(movie_data)
+        navigateDetail(movie_data.id)
     }
 }
