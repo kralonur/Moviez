@@ -15,13 +15,20 @@ import com.example.moviez.recview.adapters.MovieCollectionAdapter
 import com.example.moviez.recview.click_listeners.MovieClickListener
 import com.example.moviez.ui.movie_collection_tab.MovieCollectionsTabFragmentDirections
 
-class MovieCollectionFragment(queryType: MovieQueryType) : Fragment(), MovieClickListener {
-    private val viewModel by viewModels<MovieCollectionViewModel> {
-        MovieCollectionViewModel.Factory(
-            queryType
-        )
-    }
+class MovieCollectionFragment : Fragment(), MovieClickListener {
+    private val viewModel by viewModels<MovieCollectionViewModel>()
     private lateinit var binding: LayoutRecviewBinding
+
+    companion object {
+
+        fun newInstance(query: MovieQueryType): MovieCollectionFragment {
+            val fragment = MovieCollectionFragment()
+            val args = Bundle()
+            args.putSerializable("query", query)
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +50,10 @@ class MovieCollectionFragment(queryType: MovieQueryType) : Fragment(), MovieClic
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-        viewModel.movieList.observe(viewLifecycleOwner) {
+        val queryType: MovieQueryType =
+            requireNotNull(arguments).getSerializable("query") as MovieQueryType
+
+        viewModel.movieList(queryType).observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
 
