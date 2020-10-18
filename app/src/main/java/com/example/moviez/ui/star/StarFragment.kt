@@ -1,5 +1,6 @@
 package com.example.moviez.ui.star
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,7 +35,7 @@ class StarFragment : Fragment(), PersonClickListener {
 
         binding.recView.apply {
             this.adapter = adapter
-            layoutManager = GridLayoutManager(requireContext(), 2)
+            layoutManager = GridLayoutManager(requireContext(), getSpanCountForOrientation())
         }
 
         viewModel.personList.observe(viewLifecycleOwner) {
@@ -51,5 +52,10 @@ class StarFragment : Fragment(), PersonClickListener {
 
     override fun onClick(person_data: Person) {
         navigateDetail(person_data.id)
+    }
+
+    private fun getSpanCountForOrientation(): Int {
+        return if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4
+        else 2
     }
 }
