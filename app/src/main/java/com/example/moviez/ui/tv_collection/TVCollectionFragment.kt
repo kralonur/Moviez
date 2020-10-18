@@ -50,7 +50,8 @@ class TVCollectionFragment : Fragment(), TVClickListener {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-        val queryType: TVQueryType = arguments?.getSerializable("query") as TVQueryType
+        val queryType: TVQueryType =
+            requireNotNull(arguments).getSerializable("query") as TVQueryType
 
         viewModel.tvList(queryType).observe(viewLifecycleOwner) {
             adapter.submitList(it)

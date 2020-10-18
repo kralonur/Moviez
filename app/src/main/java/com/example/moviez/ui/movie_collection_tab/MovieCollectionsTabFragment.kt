@@ -20,12 +20,12 @@ class MovieCollectionsTabFragment : Fragment() {
 
     private val fragments =
         listOf<Fragment>(
-            MovieCollectionFragment(MovieQueryType.POPULAR),
-            MovieCollectionFragment(MovieQueryType.TOP_RATED),
-            MovieCollectionFragment(MovieQueryType.UPCOMING),
-            MovieCollectionFragment(MovieQueryType.NOW_PLAYING),
-            MovieCollectionFragment(MovieQueryType.TRENDING_DAILY),
-            MovieCollectionFragment(MovieQueryType.TRENDING_WEEKLY)
+            MovieCollectionFragment.newInstance(MovieQueryType.POPULAR),
+            MovieCollectionFragment.newInstance(MovieQueryType.TOP_RATED),
+            MovieCollectionFragment.newInstance(MovieQueryType.UPCOMING),
+            MovieCollectionFragment.newInstance(MovieQueryType.NOW_PLAYING),
+            MovieCollectionFragment.newInstance(MovieQueryType.TRENDING_DAILY),
+            MovieCollectionFragment.newInstance(MovieQueryType.TRENDING_WEEKLY)
         )
 
     private val titles by lazy {
