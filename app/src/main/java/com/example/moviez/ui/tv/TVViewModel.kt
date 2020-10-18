@@ -9,26 +9,20 @@ import com.example.moviez.repositories.TrendingRepository
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+private val DEFAULT_QUERY_TYPE = TVQueryType.POPULAR
+
+
 class TVViewModel : ViewModel() {
     private val trendingRepository = TrendingRepository()
     private val tvRepository = TVRepository()
 
-    private val queryType = MutableLiveData<TVQueryType>()
-
-    private val _navigateCollection = MutableLiveData<TVQueryType?>()
-    val navigateCollection: LiveData<TVQueryType?>
-        get() = _navigateCollection
-
-    private val _navigateDetail = MutableLiveData<TV?>()
-    val navigateDetail: LiveData<TV?>
-        get() = _navigateDetail
+    private val queryType = MutableLiveData<TVQueryType>(DEFAULT_QUERY_TYPE)
 
     private val _tvList: LiveData<List<TV>>
     val tvList: LiveData<List<TV>>
         get() = _tvList
 
     init {
-        queryType.postValue(TVQueryType.POPULAR)
         _tvList = Transformations.switchMap(queryType) {
             val list = MutableLiveData<List<TV>>()
             viewModelScope.launch {
@@ -60,24 +54,13 @@ class TVViewModel : ViewModel() {
 
     }
 
+    fun navigateCollection(navigate: (query: TVQueryType) -> Unit) {
+        navigate.invoke(requireNotNull(queryType.value))
+    }
+
     fun changeQueryType(query: TVQueryType) {
         Timber.i(query.toString())
         queryType.postValue(query)
     }
 
-    fun navigateToCollection() {
-        _navigateCollection.postValue(queryType.value)
-    }
-
-    fun navigateToCollectionDone() {
-        _navigateCollection.postValue(null)
-    }
-
-    fun navigateToDetail(tv: TV) {
-        _navigateDetail.postValue(tv)
-    }
-
-    fun navigateToDetailDone() {
-        _navigateDetail.postValue(null)
-    }
 }

@@ -20,12 +20,12 @@ class TVCollectionsTabFragment : Fragment() {
 
     private val fragments =
         listOf<Fragment>(
-            TVCollectionFragment(TVQueryType.POPULAR),
-            TVCollectionFragment(TVQueryType.TOP_RATED),
-            TVCollectionFragment(TVQueryType.AIRING_TODAY),
-            TVCollectionFragment(TVQueryType.ON_THE_AIR),
-            TVCollectionFragment(TVQueryType.TRENDING_DAILY),
-            TVCollectionFragment(TVQueryType.TRENDING_WEEKLY)
+            TVCollectionFragment.newInstance(TVQueryType.POPULAR),
+            TVCollectionFragment.newInstance(TVQueryType.TOP_RATED),
+            TVCollectionFragment.newInstance(TVQueryType.AIRING_TODAY),
+            TVCollectionFragment.newInstance(TVQueryType.ON_THE_AIR),
+            TVCollectionFragment.newInstance(TVQueryType.TRENDING_DAILY),
+            TVCollectionFragment.newInstance(TVQueryType.TRENDING_WEEKLY)
         )
 
     private val titles by lazy {

@@ -41,19 +41,15 @@ class StarCreditTVFragment : Fragment(), TVCastClickListener {
             adapter.submitList(it.tvCredits.cast)
         }
 
-        viewModel.navigateTvDetail.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController().navigate(
-                    StarDetailFragmentDirections.actionStarDetailFragmentToTVDetailFragment(
-                        it.id
-                    )
-                )
-            }
-            viewModel.navigateToTvDetailDone()
-        }
+    }
+
+    private fun navigateDetail(id: Int) {
+        findNavController().navigate(
+            StarDetailFragmentDirections.actionStarDetailFragmentToTVDetailFragment(id)
+        )
     }
 
     override fun onClick(cast_data: TVCast) {
-        viewModel.navigateToTvDetail(cast_data)
+        navigateDetail(cast_data.id)
     }
 }

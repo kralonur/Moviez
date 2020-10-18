@@ -15,13 +15,20 @@ import com.example.moviez.recview.adapters.TVCollectionAdapter
 import com.example.moviez.recview.click_listeners.TVClickListener
 import com.example.moviez.ui.tv_collection_tab.TVCollectionsTabFragmentDirections
 
-class TVCollectionFragment(queryType: TVQueryType) : Fragment(), TVClickListener {
-    private val viewModel by viewModels<TVCollectionViewModel> {
-        TVCollectionViewModel.Factory(
-            queryType
-        )
-    }
+class TVCollectionFragment : Fragment(), TVClickListener {
+    private val viewModel by viewModels<TVCollectionViewModel>()
     private lateinit var binding: LayoutRecviewBinding
+
+    companion object {
+
+        fun newInstance(query: TVQueryType): TVCollectionFragment {
+            val fragment = TVCollectionFragment()
+            val args = Bundle()
+            args.putSerializable("query", query)
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,24 +50,22 @@ class TVCollectionFragment(queryType: TVQueryType) : Fragment(), TVClickListener
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-        viewModel.tvList.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-        }
+        val queryType: TVQueryType =
+            requireNotNull(arguments).getSerializable("query") as TVQueryType
 
-        viewModel.navigateDetail.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController().navigate(
-                    TVCollectionsTabFragmentDirections.actionTVCollectionsTabFragmentToTVDetailFragment(
-                        it.id
-                    )
-                )
-            }
-            viewModel.navigateToDetailDone()
+        viewModel.tvList(queryType).observe(viewLifecycleOwner) {
+            adapter.submitList(it)
         }
 
     }
 
+    private fun navigateDetail(id: Int) {
+        findNavController().navigate(
+            TVCollectionsTabFragmentDirections.actionTVCollectionsTabFragmentToTVDetailFragment(id)
+        )
+    }
+
     override fun onClick(tv_data: TV) {
-        viewModel.navigateToDetail(tv_data)
+        navigateDetail(tv_data.id)
     }
 }

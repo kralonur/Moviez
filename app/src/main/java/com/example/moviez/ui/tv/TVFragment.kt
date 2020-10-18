@@ -38,39 +38,38 @@ class TVFragment : Fragment(), TVClickListener {
         }
 
         binding.seeAll.setOnClickListener {
-            viewModel.navigateToCollection()
+            viewModel.navigateCollection {
+                navigateCollection(it)
+            }
         }
 
         binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                binding.chipTvTrending.id -> viewModel.changeQueryType(TVQueryType.TRENDING_WEEKLY)
-                binding.chipTvPopular.id -> viewModel.changeQueryType(TVQueryType.POPULAR)
-                binding.chipTvOnTheAir.id -> viewModel.changeQueryType(TVQueryType.ON_THE_AIR)
-                binding.chipTvTopRated.id -> viewModel.changeQueryType(TVQueryType.TOP_RATED)
-                binding.chipTvAiringToday.id -> viewModel.changeQueryType(TVQueryType.AIRING_TODAY)
+            val queryType = when (checkedId) {
+                binding.chipTvTrending.id -> TVQueryType.TRENDING_WEEKLY
+                binding.chipTvOnTheAir.id -> TVQueryType.ON_THE_AIR
+                binding.chipTvTopRated.id -> TVQueryType.TOP_RATED
+                binding.chipTvAiringToday.id -> TVQueryType.AIRING_TODAY
+                else -> TVQueryType.POPULAR
             }
+
+            viewModel.changeQueryType(queryType)
         }
 
-        viewModel.navigateCollection.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController().navigate(
-                    TVFragmentDirections.actionTVFragmentToTVCollectionsTabFragment(it)
-                )
-            }
-            viewModel.navigateToCollectionDone()
-        }
+    }
 
-        viewModel.navigateDetail.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController().navigate(
-                    TVFragmentDirections.actionTVFragmentToTVDetailFragment(it.id)
-                )
-            }
-            viewModel.navigateToDetailDone()
-        }
+    private fun navigateDetail(id: Int) {
+        findNavController().navigate(
+            TVFragmentDirections.actionTVFragmentToTVDetailFragment(id)
+        )
+    }
+
+    private fun navigateCollection(queryType: TVQueryType) {
+        findNavController().navigate(
+            TVFragmentDirections.actionTVFragmentToTVCollectionsTabFragment(queryType)
+        )
     }
 
     override fun onClick(tv_data: TV) {
-        viewModel.navigateToDetail(tv_data)
+        navigateDetail(tv_data.id)
     }
 }

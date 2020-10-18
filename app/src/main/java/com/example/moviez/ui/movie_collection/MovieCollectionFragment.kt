@@ -15,13 +15,20 @@ import com.example.moviez.recview.adapters.MovieCollectionAdapter
 import com.example.moviez.recview.click_listeners.MovieClickListener
 import com.example.moviez.ui.movie_collection_tab.MovieCollectionsTabFragmentDirections
 
-class MovieCollectionFragment(queryType: MovieQueryType) : Fragment(), MovieClickListener {
-    private val viewModel by viewModels<MovieCollectionViewModel> {
-        MovieCollectionViewModel.Factory(
-            queryType
-        )
-    }
+class MovieCollectionFragment : Fragment(), MovieClickListener {
+    private val viewModel by viewModels<MovieCollectionViewModel>()
     private lateinit var binding: LayoutRecviewBinding
+
+    companion object {
+
+        fun newInstance(query: MovieQueryType): MovieCollectionFragment {
+            val fragment = MovieCollectionFragment()
+            val args = Bundle()
+            args.putSerializable("query", query)
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,24 +50,24 @@ class MovieCollectionFragment(queryType: MovieQueryType) : Fragment(), MovieClic
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-        viewModel.movieList.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-        }
+        val queryType: MovieQueryType =
+            requireNotNull(arguments).getSerializable("query") as MovieQueryType
 
-        viewModel.navigateDetail.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController().navigate(
-                    MovieCollectionsTabFragmentDirections.actionMovieCollectionsTabFragmentToMovieDetailFragment(
-                        it.id
-                    )
-                )
-            }
-            viewModel.navigateToDetailDone()
+        viewModel.movieList(queryType).observe(viewLifecycleOwner) {
+            adapter.submitList(it)
         }
 
     }
 
+    private fun navigateDetail(id: Int) {
+        findNavController().navigate(
+            MovieCollectionsTabFragmentDirections.actionMovieCollectionsTabFragmentToMovieDetailFragment(
+                id
+            )
+        )
+    }
+
     override fun onClick(movie_data: Movie) {
-        viewModel.navigateToDetail(movie_data)
+        navigateDetail(movie_data.id)
     }
 }

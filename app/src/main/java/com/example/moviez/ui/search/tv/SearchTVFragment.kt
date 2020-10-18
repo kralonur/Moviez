@@ -48,17 +48,15 @@ class SearchTVFragment : Fragment(), TVClickListener {
             adapter.submitList(it)
         }
 
-        viewModel.navigateDetail.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController().navigate(
-                    SearchFragmentDirections.actionSearchFragmentToTVDetailFragment(it.id)
-                )
-            }
-            viewModel.navigateToDetailDone()
-        }
+    }
+
+    private fun navigateDetail(id: Int) {
+        findNavController().navigate(
+            SearchFragmentDirections.actionSearchFragmentToTVDetailFragment(id)
+        )
     }
 
     override fun onClick(tv_data: TV) {
-        viewModel.navigateToDetail(tv_data)
+        navigateDetail(tv_data.id)
     }
 }
