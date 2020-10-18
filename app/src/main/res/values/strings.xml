@@ -5,6 +5,7 @@
     <string name="movie">Movie</string>
     <string name="tv">TV</string>
     <string name="discover">Discover</string>
+    <string name="discover_movies">Discover Movies</string>
     <string name="discover_tv_series">Discover TV Series</string>
     <string name="popular">Popular</string>
     <string name="trending">Trending</string>
