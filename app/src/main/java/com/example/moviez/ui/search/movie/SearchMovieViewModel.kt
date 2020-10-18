@@ -1,21 +1,14 @@
 package com.example.moviez.ui.search.movie
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.example.moviez.model.movie.Movie
 import com.example.moviez.paging.movie.SearchMovieDataSourceFactory
 import com.example.moviez.repositories.SearchRepository
 
 class SearchMovieViewModel : ViewModel() {
     private val repository = SearchRepository()
-
-    private val _navigateDetail = MutableLiveData<Movie?>()
-    val navigateDetail: LiveData<Movie?>
-        get() = _navigateDetail
 
     private val dataSourceFactory = SearchMovieDataSourceFactory(repository, scope = viewModelScope)
 
@@ -34,11 +27,4 @@ class SearchMovieViewModel : ViewModel() {
         }
     }
 
-    fun navigateToDetail(movie: Movie) {
-        _navigateDetail.postValue(movie)
-    }
-
-    fun navigateToDetailDone() {
-        _navigateDetail.postValue(null)
-    }
 }

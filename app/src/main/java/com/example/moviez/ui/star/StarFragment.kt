@@ -41,19 +41,15 @@ class StarFragment : Fragment(), PersonClickListener {
             adapter.submitList(it)
         }
 
-        viewModel.navigateDetail.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController().navigate(
-                    StarFragmentDirections.actionStarFragmentToStarDetailFragment(
-                        it.id
-                    )
-                )
-            }
-            viewModel.navigateToDetailDone()
-        }
+    }
+
+    private fun navigateDetail(id: Int) {
+        findNavController().navigate(
+            StarFragmentDirections.actionStarFragmentToStarDetailFragment(id)
+        )
     }
 
     override fun onClick(person_data: Person) {
-        viewModel.navigateToDetail(person_data)
+        navigateDetail(person_data.id)
     }
 }

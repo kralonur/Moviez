@@ -38,39 +38,38 @@ class MovieFragment : Fragment(), MovieClickListener {
         }
 
         binding.seeAll.setOnClickListener {
-            viewModel.navigateToCollection()
+            viewModel.navigateCollection {
+                navigateCollection(it)
+            }
         }
 
         binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                binding.chipMovieTrending.id -> viewModel.changeQueryType(MovieQueryType.TRENDING_WEEKLY)
-                binding.chipMoviePopular.id -> viewModel.changeQueryType(MovieQueryType.POPULAR)
-                binding.chipMovieNowPlaying.id -> viewModel.changeQueryType(MovieQueryType.NOW_PLAYING)
-                binding.chipMovieTopRated.id -> viewModel.changeQueryType(MovieQueryType.TOP_RATED)
-                binding.chipMovieUpcoming.id -> viewModel.changeQueryType(MovieQueryType.UPCOMING)
+            val queryType = when (checkedId) {
+                binding.chipMovieTrending.id -> MovieQueryType.TRENDING_WEEKLY
+                binding.chipMovieNowPlaying.id -> MovieQueryType.NOW_PLAYING
+                binding.chipMovieTopRated.id -> MovieQueryType.TOP_RATED
+                binding.chipMovieUpcoming.id -> MovieQueryType.UPCOMING
+                else -> MovieQueryType.POPULAR
             }
+
+            viewModel.changeQueryType(queryType)
         }
 
-        viewModel.navigateCollection.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController().navigate(
-                    MovieFragmentDirections.actionMovieFragmentToMovieCollectionsTabFragment(it)
-                )
-            }
-            viewModel.navigateToCollectionDone()
-        }
+    }
 
-        viewModel.navigateDetail.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController().navigate(
-                    MovieFragmentDirections.actionMovieFragmentToMovieDetailFragment(it.id)
-                )
-            }
-            viewModel.navigateToDetailDone()
-        }
+    private fun navigateDetail(id: Int) {
+        findNavController().navigate(
+            MovieFragmentDirections.actionMovieFragmentToMovieDetailFragment(id)
+        )
+    }
+
+    private fun navigateCollection(queryType: MovieQueryType) {
+        findNavController().navigate(
+            MovieFragmentDirections.actionMovieFragmentToMovieCollectionsTabFragment(queryType)
+        )
     }
 
     override fun onClick(movie_data: Movie) {
-        viewModel.navigateToDetail(movie_data)
+        navigateDetail(movie_data.id)
     }
 }

@@ -47,19 +47,15 @@ class TVDetailFragment : Fragment(), CastClickListener {
             }
         }
 
-        viewModel.navigateStar.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController().navigate(
-                    TVDetailFragmentDirections.actionTVDetailFragmentToStarDetailFragment(
-                        it.id
-                    )
-                )
-            }
-            viewModel.navigateToStarDone()
-        }
+    }
+
+    private fun navigateStar(id: Int) {
+        findNavController().navigate(
+            TVDetailFragmentDirections.actionTVDetailFragmentToStarDetailFragment(id)
+        )
     }
 
     override fun onClick(cast_data: Cast) {
-        viewModel.navigateToStar(cast_data)
+        navigateStar(cast_data.id)
     }
 }

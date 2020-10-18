@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.moviez.model.cast.Cast
 import com.example.moviez.model.movie.MovieDetails
 import com.example.moviez.model.result.Result
 import com.example.moviez.repositories.MovieRepository
@@ -17,10 +16,6 @@ class MovieDetailViewModel : ViewModel() {
     val movieDetail: LiveData<MovieDetails>
         get() = _movieDetail
 
-    private val _navigateStar = MutableLiveData<Cast?>()
-    val navigateStar: LiveData<Cast?>
-        get() = _navigateStar
-
     fun setMovie(movieId: Int) {
         viewModelScope.launch {
             when (val result =
@@ -30,11 +25,4 @@ class MovieDetailViewModel : ViewModel() {
         }
     }
 
-    fun navigateToStar(cast: Cast) {
-        _navigateStar.postValue(cast)
-    }
-
-    fun navigateToStarDone() {
-        _navigateStar.postValue(null)
-    }
 }

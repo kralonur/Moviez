@@ -47,20 +47,15 @@ class TVCollectionFragment(queryType: TVQueryType) : Fragment(), TVClickListener
             adapter.submitList(it)
         }
 
-        viewModel.navigateDetail.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController().navigate(
-                    TVCollectionsTabFragmentDirections.actionTVCollectionsTabFragmentToTVDetailFragment(
-                        it.id
-                    )
-                )
-            }
-            viewModel.navigateToDetailDone()
-        }
+    }
 
+    private fun navigateDetail(id: Int) {
+        findNavController().navigate(
+            TVCollectionsTabFragmentDirections.actionTVCollectionsTabFragmentToTVDetailFragment(id)
+        )
     }
 
     override fun onClick(tv_data: TV) {
-        viewModel.navigateToDetail(tv_data)
+        navigateDetail(tv_data.id)
     }
 }

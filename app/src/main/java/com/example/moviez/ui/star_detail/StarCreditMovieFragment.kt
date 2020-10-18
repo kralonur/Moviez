@@ -41,19 +41,15 @@ class StarCreditMovieFragment : Fragment(), MovieCastClickListener {
             adapter.submitList(it.movieCredits.cast)
         }
 
-        viewModel.navigateMovieDetail.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController().navigate(
-                    StarDetailFragmentDirections.actionStarDetailFragmentToMovieDetailFragment(
-                        it.id
-                    )
-                )
-            }
-            viewModel.navigateToMovieDetailDone()
-        }
+    }
+
+    private fun navigateDetail(id: Int) {
+        findNavController().navigate(
+            StarDetailFragmentDirections.actionStarDetailFragmentToMovieDetailFragment(id)
+        )
     }
 
     override fun onClick(cast_data: MovieCast) {
-        viewModel.navigateToMovieDetail(cast_data)
+        navigateDetail(cast_data.id)
     }
 }

@@ -36,7 +36,6 @@ class MovieDetailFragment : Fragment(), CastClickListener {
         viewModel.setMovie(movieId)
 
         val adapter = CastAdapter(this)
-
         binding.recView.adapter = adapter
 
         viewModel.movieDetail.observe(viewLifecycleOwner) {
@@ -47,19 +46,15 @@ class MovieDetailFragment : Fragment(), CastClickListener {
             }
         }
 
-        viewModel.navigateStar.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController().navigate(
-                    MovieDetailFragmentDirections.actionMovieDetailFragmentToStarDetailFragment(
-                        it.id
-                    )
-                )
-            }
-            viewModel.navigateToStarDone()
-        }
+    }
+
+    private fun navigateStar(id:Int){
+        findNavController().navigate(
+            MovieDetailFragmentDirections.actionMovieDetailFragmentToStarDetailFragment(id)
+        )
     }
 
     override fun onClick(cast_data: Cast) {
-        viewModel.navigateToStar(cast_data)
+        navigateStar(cast_data.id)
     }
 }

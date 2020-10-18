@@ -48,18 +48,16 @@ class SearchMovieFragment : Fragment(), MovieClickListener {
             adapter.submitList(it)
         }
 
-        viewModel.navigateDetail.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController().navigate(
-                    SearchFragmentDirections.actionSearchFragmentToMovieDetailFragment(it.id)
-                )
-            }
-            viewModel.navigateToDetailDone()
-        }
+    }
+
+    private fun navigateDetail(id: Int) {
+        findNavController().navigate(
+            SearchFragmentDirections.actionSearchFragmentToMovieDetailFragment(id)
+        )
     }
 
     override fun onClick(movie_data: Movie) {
-        viewModel.navigateToDetail(movie_data)
+        navigateDetail(movie_data.id)
     }
 
 }

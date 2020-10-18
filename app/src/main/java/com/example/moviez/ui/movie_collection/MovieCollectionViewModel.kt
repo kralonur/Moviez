@@ -13,10 +13,6 @@ class MovieCollectionViewModel(queryType: MovieQueryType) : ViewModel() {
     private val movieRepository = MovieRepository()
     private val trendingRepository = TrendingRepository()
 
-    private val _navigateDetail = MutableLiveData<Movie?>()
-    val navigateDetail: LiveData<Movie?>
-        get() = _navigateDetail
-
     private val dataSourceFactory =
         MovieDataSourceFactory(movieRepository, trendingRepository, viewModelScope, queryType)
 
@@ -26,16 +22,7 @@ class MovieCollectionViewModel(queryType: MovieQueryType) : ViewModel() {
         .setEnablePlaceholders(false)
         .build()
 
-
     val movieList = LivePagedListBuilder(dataSourceFactory, pagedListConfig).build()
-
-    fun navigateToDetail(movie: Movie) {
-        _navigateDetail.postValue(movie)
-    }
-
-    fun navigateToDetailDone() {
-        _navigateDetail.postValue(null)
-    }
 
     @Suppress("UNCHECKED_CAST")
     class Factory(private val queryType: MovieQueryType) : ViewModelProvider.Factory {

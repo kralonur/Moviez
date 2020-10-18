@@ -48,17 +48,15 @@ class SearchStarFragment : Fragment(), PersonClickListener {
             adapter.submitList(it)
         }
 
-        viewModel.navigateDetail.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController().navigate(
-                    SearchFragmentDirections.actionSearchFragmentToStarDetailFragment(it.id)
-                )
-            }
-            viewModel.navigateToDetailDone()
-        }
+    }
+
+    private fun navigateDetail(id: Int) {
+        findNavController().navigate(
+            SearchFragmentDirections.actionSearchFragmentToStarDetailFragment(id)
+        )
     }
 
     override fun onClick(person_data: Person) {
-        viewModel.navigateToDetail(person_data)
+        navigateDetail(person_data.id)
     }
 }
