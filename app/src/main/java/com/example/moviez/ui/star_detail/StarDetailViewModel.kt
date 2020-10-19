@@ -18,16 +18,18 @@ class StarDetailViewModel : ViewModel() {
 
     fun setPerson(personId: Int) {
         viewModelScope.launch {
-            val result = personRepository.getPersonById(
-                personId,
-                null,
-                "movie_credits,tv_credits,images,tagged_images"
-            )
-            when (result) {
+            when (val result = getPersonFromRepo(personId)) {
                 is Result.Success -> _starDetail.postValue(result.value)
             }
-
         }
+    }
+
+    private suspend fun getPersonFromRepo(personId: Int): Result<PersonDetails> {
+        return personRepository.getPersonById(
+            personId,
+            null,
+            "movie_credits,tv_credits,images,tagged_images"
+        )
     }
 
 }

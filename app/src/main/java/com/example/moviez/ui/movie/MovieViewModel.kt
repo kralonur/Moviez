@@ -1,6 +1,9 @@
 package com.example.moviez.ui.movie
 
-import androidx.lifecycle.*
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.moviez.enums.MovieQueryType
 import com.example.moviez.model.movie.Movie
 import com.example.moviez.model.result.Result
@@ -17,45 +20,45 @@ class MovieViewModel : ViewModel() {
 
     private val queryType = MutableLiveData(DEFAULT_QUERY_TYPE)
 
-    private val _movieList: LiveData<List<Movie>>
-    val movieList: LiveData<List<Movie>>
-        get() = _movieList
-
-    init {
-        _movieList = Transformations.switchMap(queryType) {
-            val list = MutableLiveData<List<Movie>>()
-            viewModelScope.launch {
-                val result = when (it) {
-                    MovieQueryType.POPULAR -> movieRepository.getPopularMovies(null, 1, null)
-                    MovieQueryType.TOP_RATED -> movieRepository.getTopRatedMovies(null, 1, null)
-                    MovieQueryType.UPCOMING -> movieRepository.getUpcomingMovies(null, 1, null)
-                    MovieQueryType.NOW_PLAYING -> movieRepository.getNowPlayingMovies(
-                        null,
-                        1,
-                        null
-                    )
-                    MovieQueryType.TRENDING_DAILY -> trendingRepository.getTrendingMovies(
-                        TrendingRepository.TimeWindow.DAY,
-                        1,
-                        null
-                    )
-                    MovieQueryType.TRENDING_WEEKLY -> trendingRepository.getTrendingMovies(
-                        TrendingRepository.TimeWindow.WEEK,
-                        1,
-                        null
-                    )
-                    else -> movieRepository.getPopularMovies(null, 1, null)
-                }
-
-                when (result) {
-                    is Result.Success -> list.postValue(result.value.results)
-                }
+    fun getMovieList() = Transformations.switchMap(queryType) {
+        val list = MutableLiveData<List<Movie>>()
+        viewModelScope.launch {
+            val result = when (it) {
+                MovieQueryType.TOP_RATED -> getTopRatedMoviesFromRepo()
+                MovieQueryType.UPCOMING -> getUpcomingMoviesFromRepo()
+                MovieQueryType.NOW_PLAYING -> getNowPlayingMoviesFromRepo()
+                MovieQueryType.TRENDING_DAILY -> getDailyTrendingMoviesFromRepo()
+                MovieQueryType.TRENDING_WEEKLY -> getWeeklyTrendingMoviesFromRepo()
+                else -> getPopularMoviesFromRepo()
             }
 
-            return@switchMap list
+            when (result) {
+                is Result.Success -> list.postValue(result.value.results)
+            }
         }
 
+        return@switchMap list
     }
+
+
+    private suspend fun getPopularMoviesFromRepo() =
+        movieRepository.getPopularMovies(null, 1, null)
+
+    private suspend fun getTopRatedMoviesFromRepo() =
+        movieRepository.getTopRatedMovies(null, 1, null)
+
+    private suspend fun getUpcomingMoviesFromRepo() =
+        movieRepository.getUpcomingMovies(null, 1, null)
+
+    private suspend fun getNowPlayingMoviesFromRepo() =
+        movieRepository.getNowPlayingMovies(null, 1, null)
+
+    private suspend fun getDailyTrendingMoviesFromRepo() =
+        trendingRepository.getTrendingMovies(TrendingRepository.TimeWindow.DAY, 1, null)
+
+    private suspend fun getWeeklyTrendingMoviesFromRepo() =
+        trendingRepository.getTrendingMovies(TrendingRepository.TimeWindow.WEEK, 1, null)
+
 
     fun changeQueryType(query: MovieQueryType) {
         Timber.i(query.toString())

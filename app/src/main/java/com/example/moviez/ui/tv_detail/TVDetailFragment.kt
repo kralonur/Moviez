@@ -33,13 +33,10 @@ class TVDetailFragment : Fragment(), CastClickListener {
 
         val tvId = args.tvId
 
-        viewModel.setTv(tvId)
-
         val adapter = CastAdapter(this)
-
         binding.recView.adapter = adapter
 
-        viewModel.tvDetail.observe(viewLifecycleOwner) {
+        viewModel.getTvDetail(tvId).observe(viewLifecycleOwner) {
             it?.let {
                 binding.tv = it
                 adapter.submitList(it.credits.casts)

@@ -12,17 +12,19 @@ import kotlinx.coroutines.launch
 class TVDetailViewModel : ViewModel() {
     private val tvRepository = TVRepository()
 
-    private val _tvDetail = MutableLiveData<TVDetails>()
-    val tvDetail: LiveData<TVDetails>
-        get() = _tvDetail
+    fun getTvDetail(tvId: Int): LiveData<TVDetails> {
+        val tvDetails = MutableLiveData<TVDetails>()
 
-    fun setTv(tvId: Int) {
         viewModelScope.launch {
-            when (val result =
-                tvRepository.getTVById(tvId, null, "images,credits,videos", null)) {
-                is Result.Success -> _tvDetail.postValue(result.value)
+            when (val result = getTvDetailFromRepo(tvId)) {
+                is Result.Success -> tvDetails.postValue(result.value)
             }
         }
+
+        return tvDetails
     }
+
+    private suspend fun getTvDetailFromRepo(tvId: Int) =
+        tvRepository.getTVById(tvId, null, "images,credits,videos", null)
 
 }

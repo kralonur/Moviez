@@ -33,7 +33,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         val adapter = MovieAdapter(this)
         binding.viewPager.adapter = adapter
 
-        viewModel.movieList.observe(viewLifecycleOwner) {
+        viewModel.getMovieList().observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
 

@@ -33,7 +33,7 @@ class TVFragment : Fragment(), TVClickListener {
         val adapter = TVAdapter(this)
         binding.viewPager.adapter = adapter
 
-        viewModel.tvList.observe(viewLifecycleOwner) {
+        viewModel.getTvList().observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
 

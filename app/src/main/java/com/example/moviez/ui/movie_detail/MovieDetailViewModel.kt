@@ -12,17 +12,19 @@ import kotlinx.coroutines.launch
 class MovieDetailViewModel : ViewModel() {
     private val movieRepository = MovieRepository()
 
-    private val _movieDetail = MutableLiveData<MovieDetails>()
-    val movieDetail: LiveData<MovieDetails>
-        get() = _movieDetail
+    fun getMovieDetail(movieId: Int): LiveData<MovieDetails> {
+        val movieDetails = MutableLiveData<MovieDetails>()
 
-    fun setMovie(movieId: Int) {
         viewModelScope.launch {
-            when (val result =
-                movieRepository.getMovieById(movieId, null, "images,credits,videos", null)) {
-                is Result.Success -> _movieDetail.postValue(result.value)
+            when (val result = getMovieDetailFromRepo(movieId)) {
+                is Result.Success -> movieDetails.postValue(result.value)
             }
         }
+
+        return movieDetails
     }
+
+    private suspend fun getMovieDetailFromRepo(movieId: Int) =
+        movieRepository.getMovieById(movieId, null, "images,credits,videos", null)
 
 }
