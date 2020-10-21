@@ -69,7 +69,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         )
     }
 
-    override fun onClick(movie_data: Movie) {
-        navigateDetail(movie_data.id)
+    override fun onClick(movieData: Movie) {
+        navigateDetail(movieData.id)
     }
 }

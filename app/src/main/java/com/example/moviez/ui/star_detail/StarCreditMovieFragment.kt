@@ -49,7 +49,7 @@ class StarCreditMovieFragment : Fragment(), MovieCastClickListener {
         )
     }
 
-    override fun onClick(cast_data: MovieCast) {
-        navigateDetail(cast_data.id)
+    override fun onClick(castData: MovieCast) {
+        navigateDetail(castData.id)
     }
 }

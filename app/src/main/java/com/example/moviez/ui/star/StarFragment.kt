@@ -50,8 +50,8 @@ class StarFragment : Fragment(), PersonClickListener {
         )
     }
 
-    override fun onClick(person_data: Person) {
-        navigateDetail(person_data.id)
+    override fun onClick(personData: Person) {
+        navigateDetail(personData.id)
     }
 
     private fun getSpanCountForOrientation(): Int {

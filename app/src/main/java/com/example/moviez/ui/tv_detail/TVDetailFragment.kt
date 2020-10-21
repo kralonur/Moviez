@@ -52,7 +52,7 @@ class TVDetailFragment : Fragment(), CastClickListener {
         )
     }
 
-    override fun onClick(cast_data: Cast) {
-        navigateStar(cast_data.id)
+    override fun onClick(castData: Cast) {
+        navigateStar(castData.id)
     }
 }

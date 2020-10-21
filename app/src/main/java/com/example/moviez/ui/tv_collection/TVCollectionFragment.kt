@@ -65,7 +65,7 @@ class TVCollectionFragment : Fragment(), TVClickListener {
         )
     }
 
-    override fun onClick(tv_data: TV) {
-        navigateDetail(tv_data.id)
+    override fun onClick(tvData: TV) {
+        navigateDetail(tvData.id)
     }
 }
