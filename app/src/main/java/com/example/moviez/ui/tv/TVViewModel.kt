@@ -38,7 +38,7 @@ class TVViewModel : ViewModel() {
             }
         }
 
-        return@switchMap list
+        list
     }
 
     private suspend fun getWeeklyTrendingTVsFromRepo() = trendingRepository.getTrendingTVs(

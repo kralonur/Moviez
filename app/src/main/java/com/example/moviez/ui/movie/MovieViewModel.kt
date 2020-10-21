@@ -37,7 +37,7 @@ class MovieViewModel : ViewModel() {
             }
         }
 
-        return@switchMap list
+        list
     }
 
 

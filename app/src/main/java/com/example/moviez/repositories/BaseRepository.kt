@@ -18,29 +18,24 @@ open class BaseRepository {
         return withContext(dispatcher) {
             try {
                 Result.Success(apiCall.invoke())
+            } catch (_: IOException) {
+                Result.NetworkError
+            } catch (exception: HttpException) {
+                val code = exception.code()
+                val errorResponse = throwableToErrorResponse(exception)
+
+                Timber.e("HttpException: $code, ${errorResponse?.statusCode}, ${errorResponse?.statusMessage}")
+
+                Result.Error(code, errorResponse)
             } catch (throwable: Throwable) {
-                when (throwable) {
-                    is IOException -> Result.NetworkError
-                    is HttpException -> {
-                        val code = throwable.code()
-                        val errorResponse = throwableToErrorResponse(throwable)
+                Timber.e(throwable)
 
-                        Timber.e("HttpException: $code, ${errorResponse?.statusCode}, ${errorResponse?.statusMessage}")
-
-                        Result.Error(code, errorResponse)
-                    }
-                    else -> {
-                        Timber.e(throwable)
-
-                        Result.Error(null, null)
-                    }
-                }
+                Result.Error(null, null)
             }
         }
     }
 
     open val dispatcher = Dispatchers.IO
-
 
     private fun throwableToErrorResponse(throwable: HttpException): ErrorResponse? {
         return try {
@@ -48,7 +43,8 @@ open class BaseRepository {
                 val moshiAdapter = Moshi.Builder().build().adapter(ErrorResponse::class.java)
                 moshiAdapter.fromJson(it)
             }
-        } catch (exception: Exception) {
+        } catch (exception: Throwable) {
+            Timber.e(exception)
             null
         }
     }

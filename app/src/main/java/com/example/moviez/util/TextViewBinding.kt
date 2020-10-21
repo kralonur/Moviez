@@ -1,8 +1,6 @@
 package com.example.moviez.util
 
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
-import com.example.moviez.GlideApp
 import com.example.moviez.R
 import com.example.moviez.model.production.ProductionCompany
 import com.example.moviez.model.production.ProductionCountry
@@ -12,24 +10,6 @@ import com.soywiz.klock.KlockLocale
 import com.soywiz.klock.parse
 import java.text.DecimalFormat
 import kotlin.math.floor
-
-@BindingAdapter("bindImage")
-fun AppCompatImageView.bindImage(imagePath: String?) {
-    imagePath?.let {
-        GlideApp.with(context)
-            .load(it)
-            .placeholder(R.drawable.ic_launcher_foreground)
-            .error(R.drawable.ic_launcher_background)
-            .into(this)
-    }
-}
-
-@BindingAdapter("bindBackdropImage")
-fun AppCompatImageView.bindBackdropImage(imagePath: String?) {
-    imagePath?.let {
-        bindImage(Constants.TMDB.BACKDROP_SIZE_780 + imagePath)
-    }
-}
 
 @BindingAdapter("bindYear")
 fun MaterialTextView.bindYear(date: String?) {
@@ -50,27 +30,6 @@ fun MaterialTextView.bindDate(date: String?) {
         val locale = KlockLocale.english
         val finalDate = dateFormat.parse(date)
         this.text = locale.formatDateLong.format(finalDate)
-    }
-}
-
-@BindingAdapter("bindProfileImage")
-fun AppCompatImageView.bindProfileImage(imagePath: String?) {
-    imagePath?.let {
-        bindImage(Constants.TMDB.PROFILE_SIZE_185 + imagePath)
-    }
-}
-
-@BindingAdapter("bindCastImage")
-fun AppCompatImageView.bindCastImage(imagePath: String?) {
-    imagePath?.let {
-        bindImage(Constants.TMDB.PROFILE_SIZE_185 + imagePath)
-    }
-}
-
-@BindingAdapter("bindPosterImage")
-fun AppCompatImageView.bindPosterImage(imagePath: String?) {
-    imagePath?.let {
-        bindImage(Constants.TMDB.PROFILE_SIZE_185 + imagePath)
     }
 }
 
