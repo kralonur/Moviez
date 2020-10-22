@@ -7,12 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.moviez.databinding.LayoutRecviewBinding
 import com.example.moviez.model.person.Person
 import com.example.moviez.recview.adapters.StarAdapter
 import com.example.moviez.recview.click_listeners.PersonClickListener
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class StarFragment : Fragment(), PersonClickListener {
     private val viewModel by viewModels<StarViewModel>()
@@ -38,8 +41,10 @@ class StarFragment : Fragment(), PersonClickListener {
             layoutManager = GridLayoutManager(requireContext(), getSpanCountForOrientation())
         }
 
-        viewModel.personList.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+        lifecycleScope.launch {
+            viewModel.starPagingFlow.collectLatest {
+                adapter.submitData(it)
+            }
         }
 
     }
