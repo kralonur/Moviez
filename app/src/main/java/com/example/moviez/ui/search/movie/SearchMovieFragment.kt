@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviez.databinding.LayoutRecviewBinding
 import com.example.moviez.model.movie.Movie
-import com.example.moviez.recview.adapters.MovieCollectionAdapter
+import com.example.moviez.recview.adapters.SearchMovieCollectionAdapter
 import com.example.moviez.recview.click_listeners.MovieClickListener
 import com.example.moviez.ui.search.SearchFragmentDirections
 import com.example.moviez.ui.search.SearchViewModel
@@ -34,7 +34,7 @@ class SearchMovieFragment : Fragment(), MovieClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = MovieCollectionAdapter(this)
+        val adapter = SearchMovieCollectionAdapter(this)
         binding.recView.apply {
             this.adapter = adapter
             layoutManager = LinearLayoutManager(requireContext())

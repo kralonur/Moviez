@@ -2,15 +2,15 @@ package com.example.moviez.recview.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import com.example.moviez.databinding.ItemCollectionMovieBinding
 import com.example.moviez.model.movie.Movie
 import com.example.moviez.recview.click_listeners.MovieClickListener
 import com.example.moviez.recview.viewholders.MovieCollectionViewHolder
 
-class MovieCollectionAdapter(private val clickListener: MovieClickListener) :
-    PagingDataAdapter<Movie, MovieCollectionViewHolder>(ListItemCallback()) {
+class SearchMovieCollectionAdapter(private val clickListener: MovieClickListener) :
+    ListAdapter<Movie, MovieCollectionViewHolder>(ListItemCallback()) {
 
 
     private class ListItemCallback : DiffUtil.ItemCallback<Movie>() {
