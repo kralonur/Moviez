@@ -1,113 +1,60 @@
 package com.example.moviez.paging.person
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.paging.PageKeyedDataSource
-import com.example.moviez.enums.NetworkState
+import androidx.paging.PagingSource
+import com.example.moviez.api.services.PersonService
+import com.example.moviez.api.services.TrendingService
 import com.example.moviez.enums.PersonQueryType
 import com.example.moviez.model.person.Person
-import com.example.moviez.model.result.BaseResponse
-import com.example.moviez.model.result.Result
-import com.example.moviez.repositories.PersonRepository
-import com.example.moviez.repositories.TrendingRepository
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class PersonDataSource(
-    private val personRepository: PersonRepository,
-    private val trendingRepository: TrendingRepository,
-    private val scope: CoroutineScope,
+    private val personService: PersonService,
+    private val trendingService: TrendingService,
     private val queryType: PersonQueryType
-) : PageKeyedDataSource<Int, Person>() {
+) : PagingSource<Int, Person>() {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Person> {
+        return try {
+            val nextPageNumber = params.key ?: 1
+            val response = loadPage(null, nextPageNumber)
 
-    private var supervisorJob = SupervisorJob()
-    private val _networkState = MutableLiveData<NetworkState>()
-    val networkState: LiveData<NetworkState>
-        get() = _networkState
-    private var retryQuery: (() -> Any)? = null
-
-
-    override fun loadInitial(
-        params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, Person>
-    ) {
-        retryQuery = { loadInitial(params, callback) }
-        load(1) {
-            callback.onResult(it, null, 2)
+            LoadResult.Page(
+                data = response,
+                prevKey = null,
+                nextKey = nextPageNumber + 1
+            )
+        } catch (exception: Throwable) {
+            LoadResult.Error(exception)
         }
-
-    }
-
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Person>) {
-        retryQuery = { loadAfter(params, callback) }
-        val page = params.key
-        load(page) {
-            callback.onResult(it, page + 1)
-        }
-    }
-
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Person>) {
-        retryQuery = { loadAfter(params, callback) }
-        val page = params.key
-        load(page) {
-            callback.onResult(it, page - 1)
-        }
-    }
-
-    private fun load(
-        page: Int,
-        callback: (List<Person>) -> Unit
-    ) {
-        Timber.i("Load page $page")
-        _networkState.postValue(NetworkState.LOADING)
-        scope.launch(getExceptionHandler() + supervisorJob) {
-            val response = loadPage(null, page)
-            retryQuery = null
-            _networkState.postValue(NetworkState.SUCCESS)
-            response?.let { callback(it) }
-        }
-    }
-
-    private fun getExceptionHandler() = CoroutineExceptionHandler { _, e ->
-        Timber.e(e)
-        _networkState.postValue(NetworkState.FAIL)
     }
 
     private suspend fun loadPage(
         language: String?,
         page: Int
-    ): List<Person>? {
+    ): List<Person> {
+        Timber.i("Load page $page")
         val response = when (queryType) {
             PersonQueryType.POPULAR -> {
-                personRepository.getPopularPeoples(language, page)
+                personService.getPopularPeoples(language, page)
             }
             PersonQueryType.TRENDING_DAILY -> {
-                trendingRepository.getTrendingPeoples(
-                    TrendingRepository.TimeWindow.DAY,
+                trendingService.getTrendingPeoples(
+                    "person",
+                    "day",
                     page,
                     language
                 )
             }
             PersonQueryType.TRENDING_WEEKLY -> {
-                trendingRepository.getTrendingPeoples(
-                    TrendingRepository.TimeWindow.WEEK,
+                trendingService.getTrendingPeoples(
+                    "person",
+                    "week",
                     page,
                     language
                 )
             }
         }
 
-        return getResult(response)
+        return response.results
     }
 
-    private fun getResult(response: Result<BaseResponse<Person>>): List<Person> {
-        return when (response) {
-            is Result.Success -> response.value.results
-            else -> emptyList()
-        }
-
-    }
 }

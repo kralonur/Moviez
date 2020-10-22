@@ -2,28 +2,25 @@ package com.example.moviez.ui.star
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
+import com.example.moviez.api.NetworkService
 import com.example.moviez.enums.PersonQueryType
-import com.example.moviez.paging.person.PersonDataSourceFactory
-import com.example.moviez.repositories.PersonRepository
-import com.example.moviez.repositories.TrendingRepository
+import com.example.moviez.paging.person.PersonDataSource
 
 class StarViewModel : ViewModel() {
-    private val personRepository = PersonRepository()
-    private val trendingRepository = TrendingRepository()
+    private val personService = NetworkService.personService
+    private val trendingService = NetworkService.trendingService
 
-    private val dataSourceFactory = PersonDataSourceFactory(
-        personRepository, trendingRepository, viewModelScope, PersonQueryType.TRENDING_WEEKLY
+    private val dataSource = PersonDataSource(
+        personService,
+        trendingService,
+        PersonQueryType.TRENDING_WEEKLY
     )
 
-    private val pagedListConfig = PagedList.Config.Builder()
-        .setPageSize(20)
-        .setInitialLoadSizeHint(5)
-        .setEnablePlaceholders(false)
-        .build()
+    private val pagingConfig =
+        PagingConfig(pageSize = 20, initialLoadSize = 5, enablePlaceholders = false)
 
-
-    val personList = LivePagedListBuilder(dataSourceFactory, pagedListConfig).build()
-
+    val starPagingFlow = Pager(pagingConfig) { dataSource }.flow.cachedIn(viewModelScope)
 }
