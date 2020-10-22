@@ -33,7 +33,7 @@ class TVFragment : Fragment(), TVClickListener {
         val adapter = TVAdapter(this)
         binding.viewPager.adapter = adapter
 
-        viewModel.tvList.observe(viewLifecycleOwner) {
+        viewModel.getTvList().observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
 
@@ -69,7 +69,7 @@ class TVFragment : Fragment(), TVClickListener {
         )
     }
 
-    override fun onClick(tv_data: TV) {
-        navigateDetail(tv_data.id)
+    override fun onClick(tvData: TV) {
+        navigateDetail(tvData.id)
     }
 }

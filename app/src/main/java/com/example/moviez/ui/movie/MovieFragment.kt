@@ -33,7 +33,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         val adapter = MovieAdapter(this)
         binding.viewPager.adapter = adapter
 
-        viewModel.movieList.observe(viewLifecycleOwner) {
+        viewModel.getMovieList().observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
 
@@ -69,7 +69,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         )
     }
 
-    override fun onClick(movie_data: Movie) {
-        navigateDetail(movie_data.id)
+    override fun onClick(movieData: Movie) {
+        navigateDetail(movieData.id)
     }
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviez.databinding.LayoutRecviewBinding
@@ -15,11 +16,15 @@ import com.example.moviez.recview.adapters.TVCollectionAdapter
 import com.example.moviez.recview.click_listeners.TVClickListener
 import com.example.moviez.ui.search.SearchFragmentDirections
 import com.example.moviez.ui.search.SearchViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class SearchTVFragment : Fragment(), TVClickListener {
     private val searchViewModel by activityViewModels<SearchViewModel>()
     private val viewModel by viewModels<SearchTVViewModel>()
     private lateinit var binding: LayoutRecviewBinding
+    private val pagingAdapter = TVCollectionAdapter(this)
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,9 +39,8 @@ class SearchTVFragment : Fragment(), TVClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = TVCollectionAdapter(this)
         binding.recView.apply {
-            this.adapter = adapter
+            this.adapter = pagingAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
 
@@ -44,8 +48,12 @@ class SearchTVFragment : Fragment(), TVClickListener {
             viewModel.updateQuery(it)
         }
 
-        viewModel.searchResults.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+        viewModel.query.observe(viewLifecycleOwner) {
+            lifecycleScope.launch {
+                viewModel.getTvPagingFlow(it).collectLatest { data ->
+                    pagingAdapter.submitData(data)
+                }
+            }
         }
 
     }
@@ -56,7 +64,7 @@ class SearchTVFragment : Fragment(), TVClickListener {
         )
     }
 
-    override fun onClick(tv_data: TV) {
-        navigateDetail(tv_data.id)
+    override fun onClick(tvData: TV) {
+        navigateDetail(tvData.id)
     }
 }

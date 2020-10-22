@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviez.databinding.LayoutRecviewBinding
@@ -14,6 +15,8 @@ import com.example.moviez.model.tv.TV
 import com.example.moviez.recview.adapters.TVCollectionAdapter
 import com.example.moviez.recview.click_listeners.TVClickListener
 import com.example.moviez.ui.tv_collection_tab.TVCollectionsTabFragmentDirections
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class TVCollectionFragment : Fragment(), TVClickListener {
     private val viewModel by viewModels<TVCollectionViewModel>()
@@ -53,8 +56,10 @@ class TVCollectionFragment : Fragment(), TVClickListener {
         val queryType: TVQueryType =
             requireNotNull(arguments).getSerializable("query") as TVQueryType
 
-        viewModel.tvList(queryType).observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+        lifecycleScope.launch {
+            viewModel.getTvPagingFlow(queryType).collectLatest {
+                adapter.submitData(it)
+            }
         }
 
     }
@@ -65,7 +70,7 @@ class TVCollectionFragment : Fragment(), TVClickListener {
         )
     }
 
-    override fun onClick(tv_data: TV) {
-        navigateDetail(tv_data.id)
+    override fun onClick(tvData: TV) {
+        navigateDetail(tvData.id)
     }
 }

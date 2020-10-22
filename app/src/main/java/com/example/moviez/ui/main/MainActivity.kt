@@ -36,8 +36,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun hideBottomNavigation(bottom_navigation: BottomNavigationView) {
-        with(bottom_navigation) {
+    private fun hideBottomNavigation(bottomNavigation: BottomNavigationView) {
+        with(bottomNavigation) {
             if (visibility == View.VISIBLE && alpha == 1f) {
                 animate()
                     .alpha(0f)
@@ -47,8 +47,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showBottomNavigation(bottom_navigation: BottomNavigationView) {
-        with(bottom_navigation) {
+    private fun showBottomNavigation(bottomNavigation: BottomNavigationView) {
+        with(bottomNavigation) {
             visibility = View.VISIBLE
             animate()
                 .alpha(1f)

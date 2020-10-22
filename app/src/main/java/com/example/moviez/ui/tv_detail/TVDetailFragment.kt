@@ -33,13 +33,10 @@ class TVDetailFragment : Fragment(), CastClickListener {
 
         val tvId = args.tvId
 
-        viewModel.setTv(tvId)
-
         val adapter = CastAdapter(this)
-
         binding.recView.adapter = adapter
 
-        viewModel.tvDetail.observe(viewLifecycleOwner) {
+        viewModel.getTvDetail(tvId).observe(viewLifecycleOwner) {
             it?.let {
                 binding.tv = it
                 adapter.submitList(it.credits.casts)
@@ -55,7 +52,7 @@ class TVDetailFragment : Fragment(), CastClickListener {
         )
     }
 
-    override fun onClick(cast_data: Cast) {
-        navigateStar(cast_data.id)
+    override fun onClick(castData: Cast) {
+        navigateStar(castData.id)
     }
 }
