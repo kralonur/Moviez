@@ -2,7 +2,7 @@ package com.example.moviez.recview.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.example.moviez.databinding.ItemCollectionMovieBinding
 import com.example.moviez.model.movie.Movie
@@ -10,7 +10,7 @@ import com.example.moviez.recview.click_listeners.MovieClickListener
 import com.example.moviez.recview.viewholders.MovieCollectionViewHolder
 
 class MovieCollectionAdapter(private val clickListener: MovieClickListener) :
-    PagedListAdapter<Movie, MovieCollectionViewHolder>(ListItemCallback()) {
+    PagingDataAdapter<Movie, MovieCollectionViewHolder>(ListItemCallback()) {
 
 
     private class ListItemCallback : DiffUtil.ItemCallback<Movie>() {

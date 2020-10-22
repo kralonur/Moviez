@@ -2,29 +2,27 @@ package com.example.moviez.ui.tv_collection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
+import com.example.moviez.api.NetworkService
 import com.example.moviez.enums.TVQueryType
-import com.example.moviez.paging.tv.TVDataSourceFactory
-import com.example.moviez.repositories.TVRepository
-import com.example.moviez.repositories.TrendingRepository
+import com.example.moviez.paging.tv.TVDataSource
 
 class TVCollectionViewModel : ViewModel() {
-    private val tvRepository = TVRepository()
-    private val trendingRepository = TrendingRepository()
+    private val tvService = NetworkService.tvService
+    private val trendingService = NetworkService.trendingService
 
-    fun tvList(queryType: TVQueryType) =
-        LivePagedListBuilder(getDataSourceFactory(queryType), getPagedListConfig()).build()
+    private fun getDataSource(queryType: TVQueryType) = TVDataSource(
+        tvService,
+        trendingService,
+        queryType
+    )
 
-    private fun getPagedListConfig(): PagedList.Config {
-        return PagedList.Config.Builder()
-            .setPageSize(20)
-            .setInitialLoadSizeHint(5)
-            .setEnablePlaceholders(false)
-            .build()
-    }
+    private val pagingConfig =
+        PagingConfig(pageSize = 20, initialLoadSize = 5, enablePlaceholders = false)
 
-    private fun getDataSourceFactory(queryType: TVQueryType) =
-        TVDataSourceFactory(tvRepository, trendingRepository, viewModelScope, queryType)
+    fun getTvPagingFlow(queryType: TVQueryType) =
+        Pager(pagingConfig) { getDataSource(queryType) }.flow.cachedIn(viewModelScope)
 
 }
