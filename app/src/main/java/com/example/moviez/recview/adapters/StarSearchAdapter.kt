@@ -2,7 +2,7 @@ package com.example.moviez.recview.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.example.moviez.databinding.ItemSearchStarBinding
 import com.example.moviez.model.person.Person
@@ -10,7 +10,7 @@ import com.example.moviez.recview.click_listeners.PersonClickListener
 import com.example.moviez.recview.viewholders.StarSearchViewHolder
 
 class StarSearchAdapter(private val clickListener: PersonClickListener) :
-    PagedListAdapter<Person, StarSearchViewHolder>(ListItemCallback()) {
+    PagingDataAdapter<Person, StarSearchViewHolder>(ListItemCallback()) {
 
 
     private class ListItemCallback : DiffUtil.ItemCallback<Person>() {
